@@ -6,7 +6,7 @@ const InsidenTable = ({ insidenList = [] }) => {
   const [filteredList, setFilteredList] = useState(insidenList);
   const [filterOption, setFilterOption] = useState('');
   const [elapsedTimes, setElapsedTimes] = useState([]);
-  const [initialLoadTime, setInitialLoadTime] = useState(new Date());
+  const [initialLoadTime] = useState(new Date()); // Set the initial load time only once
 
   // Function to calculate elapsed time since the table was first loaded, in days, hours, and minutes
   const calculateElapsedTime = (loadTime) => {
@@ -20,11 +20,8 @@ const InsidenTable = ({ insidenList = [] }) => {
     return { days, hours, minutes };
   };
 
-  // Set initial load time when the component mounts
+  // Set interval to update elapsed times every minute
   useEffect(() => {
-    setInitialLoadTime(new Date());
-
-    // Set interval to update elapsed times every minute
     const interval = setInterval(() => {
       const updatedElapsedTimes = insidenList.map(() => calculateElapsedTime(initialLoadTime));
       setElapsedTimes(updatedElapsedTimes);
@@ -32,7 +29,7 @@ const InsidenTable = ({ insidenList = [] }) => {
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, [insidenList]);
+  }, [insidenList, initialLoadTime]); // Include initialLoadTime in the dependency array
 
   // Update filtered list when filterOption changes or elapsed times update
   useEffect(() => {
