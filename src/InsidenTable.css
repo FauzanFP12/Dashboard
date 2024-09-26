@@ -1,0 +1,73 @@
+/* InsidenTable.css */
+.insiden-table-container {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
+  }
+  
+  .table-title {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #0056b3;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .filter-section {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .insiden-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .insiden-table th,
+  .insiden-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevent long text from wrapping */
+  }
+  
+  .insiden-table th {
+    background-color: #f4f6f8;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .insiden-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .insiden-table tr:hover {
+    background-color: #e0e7ff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .no-data {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+  }
+  
+  @media (max-width: 768px) {
+    .insiden-table-container {
+      overflow-x: auto; /* Allow horizontal scroll on smaller screens */
+    }
+  
+    .insiden-table th,
+    .insiden-table td {
+      padding: 8px;
+    }
+  }
+  

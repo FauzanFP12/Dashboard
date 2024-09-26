@@ -1,0 +1,23 @@
+.app-header {
+    background-color: #3498db; /* Change to your preferred color */
+    color: white;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between; /* Align items to the sides */
+    align-items: center; /* Center vertically */
+}
+
+.sidebar-toggle {
+    background-color: white; /* Button background */
+    border: none;
+    color: #3498db; /* Text color */
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.sidebar-toggle:hover {
+    background-color: #e6e6e6; /* Light gray on hover */
+}
