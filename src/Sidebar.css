@@ -1,29 +1,19 @@
-/* Sidebar.css */
+/* Sidebar Styles */
 .sidebar {
     position: fixed;
+    
     left: 0;
-    top: 0;
-    bottom: 0;
+    height: 100%;
     width: 250px;
-    background-color: #f8f9fa;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
+    background-color: #34495e;
+    color: white;
+    padding: 20px;
     transition: transform 0.3s ease;
+    z-index: 1000; /* Ensure sidebar is above other content */
 }
 
 .sidebar.closed {
     transform: translateX(-100%);
-}
-
-.sidebar-toggle {
-    display: block;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    margin: 10px;
 }
 
 .sidebar ul {
@@ -37,6 +27,8 @@
 }
 
 .sidebar ul li a {
+    color: white;
     text-decoration: none;
-    color: #333;
 }
+
+

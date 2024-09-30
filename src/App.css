@@ -1,101 +1,47 @@
+/* App container */
 .app-container {
-  display: flex; /* Use flexbox for layout */
-  height: 100vh; /* Full viewport height */
-  overflow: hidden; /* Prevent overflow when sidebar is toggled */
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.sidebar {
-  position: fixed;  /* Fix the sidebar to the left */
-  top: 0;
-  left: 0;
-  height: 100%; /* Full height */
-  width: 250px; /* Width of the sidebar */
-  background-color: #34495e; /* Background color */
-  color: white;
-  padding: 20px;
-  transition: transform 0.3s ease; /* Smooth transition */
-  z-index: 1000; /* Ensure it appears above other elements */
-}
-
-.sidebar.closed {
-  transform: translateX(-100%); /* Hide the sidebar */
-}
-
-.header {
-  position: fixed; /* Fix the header to the top */
-  top: 0;
-  left: 0;
-  right: 0; /* Full width */
-  background-color: #3498db; /* Header color */
-  color: white;
-  padding: 15px;
-  text-align: center;
-  z-index: 999; /* Make sure it appears above the sidebar */
-}
-
+/* Main content area */
 .main-content {
-  flex-grow: 1; /* Allow this area to grow */
-  margin-left: 250px; /* Leave space for the sidebar */
+  flex-grow: 1;
+  margin-left: 250px; /* Align with sidebar width */
   margin-top: 60px; /* Leave space for the fixed header */
-  padding: 20px; /* Some padding for aesthetics */
-  transition: margin-left 0.3s ease; /* Smooth transition for main content */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+  overflow-y: auto;
 }
 
+/* Adjust when sidebar is closed */
 .sidebar.closed + .main-content {
-  margin-left: 0; /* Remove margin when sidebar is closed */
+  margin-left: 0;
 }
 
-.main-content {
-  overflow-y: auto; /* Allow scrolling */
-}
-
-/* App.css */
-.app-container {
-    display: flex;
-}
-
-.sidebar {
-    width: 250px;
-    background-color: #f4f4f4;
-    transition: transform 0.3s ease;
-}
-
-.main-content {
-    flex: 1;
-    padding: 20px;
-}
-
-.header {
-    display: center;
-  
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-}
-
+/* Navigation tabs */
 .tabs-navigation {
-    display: flex;
-    gap: 10px;
-    margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  margin: 20px 20px;
 }
 
 .tabs-navigation a {
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: background-color 0.2s;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: background-color 0.2s;
 }
 
 .tabs-navigation a.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
 }
 
 .tabs-navigation a:hover {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
-
-

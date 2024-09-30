@@ -1,179 +1,114 @@
-// FormInsiden.js
 import React, { useState } from 'react';
-import './FormInsiden.css';
+import axios from 'axios';
+import './FormInsiden.css'; // Import the CSS file
 
 const FormInsiden = ({ addInsiden }) => {
-  const [insiden, setInsiden] = useState({
-    id: '',
-    deskripsi: '',
-    status: 'Open',
-    tanggalStart: '',
-    durasi: '',
-    sbu: '',
-    backbone: '',
-    superbackbone: '',
-    distribusi: '',
-    access: '',
-    pilihan: 'Backbone',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInsiden({
-      ...insiden,
-      [name]: value
+    const [formData, setFormData] = useState({
+        idInsiden: '',        // New field for incident ID
+        deskripsi: '',
+        status: 'Open',
+        tanggalStart: '',
+        sbu: '',
+        pilihan: '',          // Field for selection (backbone, superbackbone, distribusi, access)
     });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
 
-    // Validate that duration must be positive
-    if (insiden.durasi <= 0) {
-      alert("Durasi insiden harus lebih besar dari 0!");
-      return;
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    // Add new incident to the list
-    addInsiden(insiden);
+        try {
+            // Make API request to save the new incident
+            const response = await axios.post('http://localhost:5000/api/insidens', formData);
+            
+            // Call the function passed from the parent component to update the table
+            addInsiden(response.data); // Pass the new incident data to App.js to update state
 
-    // Reset form after submit
-    setInsiden({
-      id: '',
-      deskripsi: '',
-      status: 'Open',
-      tanggalStart: '',
-      durasi: '',
-      sbu: '',
-      backbone: '',
-      superbackbone: '',
-      distribusi: '',
-      access: '',
-      pilihan: 'Backbone',
-      
-    });
-  };
+            // Reset the form after submission
+            setFormData({
+                idInsiden: '',
+                deskripsi: '',
+                status: 'Open',
+                tanggalStart: '',
+                sbu: '',
+                pilihan: '',
+            });
+        } catch (error) {
+            console.error('Error adding incident:', error);
+        }
+    };
 
-  return (
-    <form onSubmit={handleSubmit} className="form-insiden">
-      <div className="form-group">
-        <label>ID Insiden:</label>
-        <input
-          type="text"
-          name="id"
-          value={insiden.id}
-          onChange={handleChange}
-          placeholder="Masukkan ID Insiden"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Deskripsi Insiden:</label>
-        <textarea
-          name="deskripsi"
-          value={insiden.deskripsi}
-          onChange={handleChange}
-          placeholder="Deskripsikan insiden..."
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Status:</label>
-        <select name="status" value={insiden.status} onChange={handleChange}>
-          <option value="Open">Open</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Closed">Closed</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label>Tanggal Start:</label>
-        <input
-          type="date"
-          name="tanggalStart"
-          value={insiden.tanggalStart}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Durasi (jam):</label>
-        <input
-          type="number"
-          name="durasi"
-          value={insiden.durasi}
-          onChange={handleChange}
-          placeholder="Durasi dalam jam"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>SBU:</label>
-        <input
-          type="text"
-          name="sbu"
-          value={insiden.sbu}
-          onChange={handleChange}
-          placeholder="Masukkan SBU"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Backbone:</label>
-        <input
-          type="text"
-          name="backbone"
-          value={insiden.backbone}
-          onChange={handleChange}
-          placeholder="Masukkan Backbone"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Super Backbone:</label>
-        <input
-          type="text"
-          name="superbackbone"
-          value={insiden.superbackbone}
-          onChange={handleChange}
-          placeholder="Masukkan Super Backbone"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Distribusi:</label>
-        <input
-          type="text"
-          name="distribusi"
-          value={insiden.distribusi}
-          onChange={handleChange}
-          placeholder="Masukkan Distribusi"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Access:</label>
-        <input
-          type="text"
-          name="access"
-          value={insiden.access}
-          onChange={handleChange}
-          placeholder="Masukkan Access"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Pilihan:</label>
-        <select name="pilihan" value={insiden.pilihan} onChange={handleChange}>
-          <option value="Backbone">Backbone</option>
-          <option value="Super Backbone">Super Backbone</option>
-          <option value="Distribusi">Distribusi</option>
-          <option value="Access">Access</option>
-          
-        </select>
-      </div>
-      <button type="submit" className="submit-button">Tambah Insiden</button>
-    </form>
-  );
+    return (
+        <div className="form-container">
+            <h2>Add New Incident</h2>
+            <form onSubmit={handleSubmit}>
+                {/* ID Insiden */}
+                <input
+                    type="text"
+                    name="idInsiden"
+                    value={formData.idInsiden}
+                    onChange={handleChange}
+                    placeholder="ID Insiden"
+                    required
+                />
+                {/* Deskripsi */}
+                <input
+                    type="text"
+                    name="deskripsi"
+                    value={formData.deskripsi}
+                    onChange={handleChange}
+                    placeholder="Deskripsi"
+                    required
+                />
+                {/* Status */}
+                <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="Open">Open</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                {/* Tanggal Start */}
+                <input
+                    type="datetime-local"
+                    name="tanggalStart"
+                    value={formData.tanggalStart}
+                    onChange={handleChange}
+                    required
+                />
+                {/* SBU */}
+                <input
+                    type="text"
+                    name="sbu"
+                    value={formData.sbu}
+                    onChange={handleChange}
+                    placeholder="Nama SBU"
+                    required
+                />
+                {/* Pilihan (backbone, superbackbone, distribusi, access) */}
+                <select
+                    name="pilihan"
+                    value={formData.pilihan}
+                    onChange={handleChange}
+                >
+                    <option value="">--Pilih Jenis--</option>
+                    <option value="Backbone">Backbone</option>
+                    <option value="SuperBackbone">Super Backbone</option>
+                    <option value="Distribusi">Distribusi</option>
+                    <option value="Access">Access</option>
+                </select>
+
+                {/* Submit button */}
+                <button type="submit">Add Insiden</button>
+            </form>
+        </div>
+    );
 };
 
 export default FormInsiden;

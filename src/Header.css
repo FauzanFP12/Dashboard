@@ -1,23 +1,81 @@
+/* General container for layout */
+.app-container {
+    display: flex;
+    flex-direction: column; /* Make the header and content stack vertically */
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full width for both header and content */
+}
+
+/* Header Styles */
 .app-header {
-    background-color: #3498db; /* Change to your preferred color */
+    background-color: #3498db;
     color: white;
     padding: 15px;
     text-align: center;
     display: flex;
-    justify-content: space-between; /* Align items to the sides */
-    align-items: center; /* Center vertically */
+    margin-left: -50px;
+    justify-content: space-between;
+    position: fixed;
+    align-items: center;
+    top:0;
+    z-index: 999; /* Ensure it stays above other elements */
+    height: 80px; /* Consistent height */
+    width: 110%; /* Take full width of the page */
+    box-sizing: border-box; /* Ensure padding is included in width */
 }
 
+.heading {
+    font-size: 24px;
+    margin: 0;
+    margin-left: -130px;
+    flex-grow: 1; /* Allows the heading to expand and center itself */
+    text-align: center;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 20px;
+    height: 100vh; /* Full height */
+    width: 250px; /* Set width of sidebar */
+    position: absolute; /* Sidebar will float over content */
+    left: 0;
+   
+    box-sizing: border-box;
+    z-index: 500; /* Ensure it is below the header */
+    transition: transform 0.3s ease; /* Smooth transition for open/close */
+}
+
+.sidebar.closed {
+    transform: translateX(-100%); /* Slide sidebar out of view */
+}
+
+/* Sidebar Toggle Button */
 .sidebar-toggle {
-    background-color: white; /* Button background */
+    background-color: white;
     border: none;
-    color: #3498db; /* Text color */
+    color: #3498db;
     padding: 10px 15px;
     cursor: pointer;
+    margin-left: 30px;
     border-radius: 5px;
     font-size: 16px;
+    z-index: 1000; /* Ensure the button appears above sidebar */
 }
 
 .sidebar-toggle:hover {
-    background-color: #e6e6e6; /* Light gray on hover */
+    background-color: #e6e6e6;
+}
+
+/* Main content that should adjust based on sidebar */
+.main-content {
+    margin-left: 250px; /* Adjust according to sidebar width */
+    margin-top: 60px; /* Adjust according to header height */
+    padding: 20px;
+    transition: margin-left 0.3s ease; /* Smooth transition for when sidebar is toggled */
+}
+
+.sidebar.closed + .main-content {
+    margin-left: 0; /* Remove margin when sidebar is closed */
 }
