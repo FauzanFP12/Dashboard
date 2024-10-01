@@ -22,7 +22,7 @@ const FormInsiden = ({ addInsiden }) => {
 
         try {
             // Make API request to save the new incident
-            const response = await axios.post('http://localhost:5000/api/insidens', formData);
+            const response = await axios.post('http://backend-wine-rho.vercel.app/api/insidens', formData);
             
             // Call the function passed from the parent component to update the table
             addInsiden(response.data); // Pass the new incident data to App.js to update state

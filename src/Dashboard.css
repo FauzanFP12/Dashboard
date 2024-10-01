@@ -78,6 +78,14 @@
     position: relative;
 }
 
+.settings-button{
+    align-content: center;
+    padding-left: 10px;
+    display: block;
+    float: right;
+    
+}
+
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
     .ticket-counters {

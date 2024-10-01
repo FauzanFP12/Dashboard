@@ -12,43 +12,39 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import moment from 'moment'; // For date formatting
+import Settings from './Settings'; // Import the Settings component
+import Modal from './Modal'; // Import the Modal component for showing filtered incidents
 
-// Register the required chart elements
+// Register chart.js elements
 ChartJS.register(ArcElement, BarElement, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-// Define color schemes for status, time, and categories
-const STATUS_COLORS = {
-    Open: "#3498db",       // Blue for Open
-    Closed: "#2ecc71",     // Green for Closed
-    InProgress: "#f39c12", // Orange for In Progress
-};
+const Dashboard = ({ insidenList = [] }) => {
+    const [visibleCharts, setVisibleCharts] = useState({
+        doughnut: true,
+        pie: true,
+        line: true,
+        sbuBar: true,
+        categoryBar: true,
+    });
 
-const TIME_COLORS = {
-    Under4: "#ff6384",   // Red for <4 hours
-    Under8: "#36a2eb",   // Blue for <8 hours
-    Under12: "#ffcd56",  // Yellow for <12 hours
-    Under24: "#4bc0c0",  // Green for <24 hours
-};
+    const [settingsVisible, setSettingsVisible] = useState(false); // For showing/hiding the settings modal
+    const [isModalOpen, setIsModalOpen] = useState(false); // For showing/hiding the modal
+    const [filteredIncidents, setFilteredIncidents] = useState([]); // Store filtered incidents in modal
+    const [modalTitle, setModalTitle] = useState(''); // Store modal title
 
-const CATEGORY_COLORS = {
-    Backbone: "#3498db",        // Blue
-    SuperBackbone: "#e74c3c",   // Red
-    Distribusi: "#f1c40f",      // Yellow
-    Access: "#2ecc71",          // Green
-};
-
-const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCategoryData: {} } }) => {
-    // Initialize counters for status and elapsed time
     const [statusCount, setStatusCount] = useState({ Open: 0, Closed: 0, InProgress: 0 });
     const [timeCount, setTimeCount] = useState({ under4: 0, under8: 0, under12: 0, under24: 0 });
     const [incidentsOverTime, setIncidentsOverTime] = useState({ labels: [], data: [] });
+    const [sbuStatusData, setSbuStatusData] = useState({}); // For storing SBU chart data
+    const [sbuCategoryData, setSbuCategoryData] = useState({}); // For storing category chart data
 
-    // Calculate the number of incidents by status, elapsed time, and incidents over time
+    // Calculate the data based on insidenList
     useEffect(() => {
         const tempStatusCount = { Open: 0, Closed: 0, InProgress: 0 };
         const tempTimeCount = { under4: 0, under8: 0, under12: 0, under24: 0 };
         const tempIncidentsOverTime = {};
+        const tempSbuStatusData = {};
+        const tempSbuCategoryData = {};
 
         insidenList.forEach((insiden) => {
             // Count incidents by status
@@ -70,23 +66,82 @@ const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCateg
                 tempTimeCount.under24 += 1;
             }
 
-            // Group incidents by date
-            const dateKey = new Date(insiden.tanggalStart).toISOString().split('T')[0]; // YYYY-MM-DD format
+            // Group incidents by date for line chart
+            const dateKey = new Date(insiden.tanggalStart).toISOString().split('T')[0];
             if (!tempIncidentsOverTime[dateKey]) {
                 tempIncidentsOverTime[dateKey] = 0;
             }
             tempIncidentsOverTime[dateKey] += 1;
+
+            // Group incidents by SBU and status for bar charts
+            if (!tempSbuStatusData[insiden.sbu]) {
+                tempSbuStatusData[insiden.sbu] = { Open: 0, Closed: 0, InProgress: 0 };
+            }
+            tempSbuStatusData[insiden.sbu][insiden.status] += 1;
+
+            // Group incidents by SBU and category for bar charts
+            if (!tempSbuCategoryData[insiden.sbu]) {
+                tempSbuCategoryData[insiden.sbu] = { Backbone: 0, SuperBackbone: 0, Distribusi: 0, Access: 0 };
+            }
+            tempSbuCategoryData[insiden.sbu][insiden.pilihan] += 1;
         });
 
-        // Prepare data for the Line Chart
         const sortedDates = Object.keys(tempIncidentsOverTime).sort();
-        const incidentsData = sortedDates.map(date => tempIncidentsOverTime[date]);
+        const incidentsData = sortedDates.map((date) => tempIncidentsOverTime[date]);
 
-        // Set updated data in state
         setStatusCount(tempStatusCount);
         setTimeCount(tempTimeCount);
         setIncidentsOverTime({ labels: sortedDates, data: incidentsData });
+        setSbuStatusData(tempSbuStatusData);
+        setSbuCategoryData(tempSbuCategoryData);
     }, [insidenList]);
+
+    // Function to handle opening the modal and filtering incidents
+    const openModalWithType = (type) => {
+        let filteredData = [];
+        let title = '';
+
+        switch (type) {
+            case 'All':
+                filteredData = insidenList;
+                title = 'All Incidents';
+                break;
+            case 'Open':
+                filteredData = insidenList.filter((insiden) => insiden.status === 'Open');
+                title = 'Open Incidents';
+                break;
+            case 'Closed':
+                filteredData = insidenList.filter((insiden) => insiden.status === 'Closed');
+                title = 'Closed Incidents';
+                break;
+            case 'InProgress':
+                filteredData = insidenList.filter((insiden) => insiden.status === 'InProgress');
+                title = 'In Progress Incidents';
+                break;
+            default:
+                break;
+        }
+
+        setFilteredIncidents(filteredData);
+        setModalTitle(title);
+        setIsModalOpen(true); // Show the modal
+    };
+
+    // Close the modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setFilteredIncidents([]);
+    };
+
+    // Handle saving settings
+    const handleSaveSettings = () => {
+        console.log('Settings Saved:', visibleCharts);
+    };
+
+    // Toggle visibility of charts
+    const handleToggleChart = (chart) => {
+        setVisibleCharts((prev) => ({ ...prev, [chart]: !prev[chart] }));
+    };
 
     // Data for the Doughnut Chart (status breakdown)
     const doughnutData = {
@@ -94,7 +149,7 @@ const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCateg
         datasets: [
             {
                 data: [statusCount.Open, statusCount.Closed, statusCount.InProgress],
-                backgroundColor: [STATUS_COLORS.Open, STATUS_COLORS.Closed, STATUS_COLORS.InProgress],
+                backgroundColor: ['#3498db', '#2ecc71', '#f39c12'],
             },
         ],
     };
@@ -107,14 +162,14 @@ const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCateg
             },
         },
     };
-
+     
     // Data for the Pie Chart (elapsed time)
     const timePieData = {
         labels: ['< 4 hours', '< 8 hours', '< 12 hours', '< 24 hours'],
         datasets: [
             {
                 data: [timeCount.under4, timeCount.under8, timeCount.under12, timeCount.under24],
-                backgroundColor: [TIME_COLORS.Under4, TIME_COLORS.Under8, TIME_COLORS.Under12, TIME_COLORS.Under24],
+                backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0'],
             },
         ],
     };
@@ -129,24 +184,24 @@ const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCateg
     };
 
     // Data for the Grouped Bar Chart (incidents per SBU by status)
-    const sbuLabels = Object.keys(chartData.sbuStatusData || {}); // Dynamic SBU labels
+    const sbuLabels = Object.keys(sbuStatusData); // Dynamic SBU labels
     const sbuGroupedBarData = {
         labels: sbuLabels,
         datasets: [
             {
                 label: 'Open Tickets',
-                data: sbuLabels.map((sbu) => chartData.sbuStatusData[sbu]?.Open || 0),
-                backgroundColor: STATUS_COLORS.Open,  
+                data: sbuLabels.map((sbu) => sbuStatusData[sbu]?.Open || 0),
+                backgroundColor: '#3498db',
             },
             {
                 label: 'Closed Tickets',
-                data: sbuLabels.map((sbu) => chartData.sbuStatusData[sbu]?.Closed || 0),
-                backgroundColor: STATUS_COLORS.Closed,  
+                data: sbuLabels.map((sbu) => sbuStatusData[sbu]?.Closed || 0),
+                backgroundColor: '#2ecc71',
             },
             {
                 label: 'In Progress Tickets',
-                data: sbuLabels.map((sbu) => chartData.sbuStatusData[sbu]?.InProgress || 0),
-                backgroundColor: STATUS_COLORS.InProgress,
+                data: sbuLabels.map((sbu) => sbuStatusData[sbu]?.InProgress || 0),
+                backgroundColor: '#f39c12',
             },
         ],
     };
@@ -174,23 +229,23 @@ const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCateg
         datasets: [
             {
                 label: 'Backbone',
-                data: sbuLabels.map((sbu) => chartData.sbuCategoryData[sbu]?.Backbone || 0),
-                backgroundColor: CATEGORY_COLORS.Backbone,  
+                data: sbuLabels.map((sbu) => sbuCategoryData[sbu]?.Backbone || 0),
+                backgroundColor: '#3498db',
             },
             {
                 label: 'Super Backbone',
-                data: sbuLabels.map((sbu) => chartData.sbuCategoryData[sbu]?.SuperBackbone || 0),
-                backgroundColor: CATEGORY_COLORS.SuperBackbone,  
+                data: sbuLabels.map((sbu) => sbuCategoryData[sbu]?.SuperBackbone || 0),
+                backgroundColor: '#e74c3c',
             },
             {
                 label: 'Distribusi',
-                data: sbuLabels.map((sbu) => chartData.sbuCategoryData[sbu]?.Distribusi || 0),
-                backgroundColor: CATEGORY_COLORS.Distribusi,  
+                data: sbuLabels.map((sbu) => sbuCategoryData[sbu]?.Distribusi || 0),
+                backgroundColor: '#f1c40f',
             },
             {
                 label: 'Access',
-                data: sbuLabels.map((sbu) => chartData.sbuCategoryData[sbu]?.Access || 0),
-                backgroundColor: CATEGORY_COLORS.Access,
+                data: sbuLabels.map((sbu) => sbuCategoryData[sbu]?.Access || 0),
+                backgroundColor: '#2ecc71',
             },
         ],
     };
@@ -248,57 +303,93 @@ const Dashboard = ({ insidenList = [], chartData = { sbuStatusData: {}, sbuCateg
 
     return (
         <div>
-            {/* Incident Counters (Total, Open, Closed, In Progress) */}
+            {/* Settings Modal */}
+            {settingsVisible && (
+                <Settings
+                    visibleCharts={visibleCharts}
+                    onToggleChart={handleToggleChart}
+                    onClose={() => setSettingsVisible(false)}
+                    onSave={handleSaveSettings}
+                />
+            )}
+
+            {/* Modal for displaying filtered incidents */}
+            {isModalOpen && (
+                <Modal onClose={closeModal}>
+                    <h2>{modalTitle}</h2>
+                    <ul>
+                        {filteredIncidents.map((insiden, index) => (
+                            <li key={index}>
+                                ID: {insiden.idInsiden} | Status: {insiden.status} | Description: {insiden.deskripsi}
+                            </li>
+                        ))}
+                    </ul>
+                </Modal>
+            )}
+
+            {/* Button to open settings */}
+            <button className="settings-button" onClick={() => setSettingsVisible(true)}>
+                Settings
+            </button>
+            <br></br><br></br>
+            <br></br>
+
             <div className="ticket-counters">
-                <div className="counter">
+                <div className="counter" onClick={() => openModalWithType('All')}>
                     <h3>Total Incidents</h3>
                     <p>{insidenList.length}</p>
                 </div>
-                <div className="counter">
+                <div className="counter" onClick={() => openModalWithType('Open')}>
                     <h3>Open Tickets</h3>
                     <p>{statusCount.Open}</p>
                 </div>
-                <div className="counter">
+                <div className="counter" onClick={() => openModalWithType('Closed')}>
                     <h3>Closed Tickets</h3>
                     <p>{statusCount.Closed}</p>
                 </div>
-                <div className="counter">
+                <div className="counter" onClick={() => openModalWithType('InProgress')}>
                     <h3>In Progress Tickets</h3>
                     <p>{statusCount.InProgress}</p>
                 </div>
             </div>
 
-            {/* Charts */}
+            {/* Chart Section */}
             <div className="charts">
-                {/* Doughnut Chart for status breakdown */}
-                <div className="chart">
-                    <h4>Total Incidents by Status</h4>
-                    <Doughnut data={doughnutData} options={doughnutOptions} />
-                </div>
+                {visibleCharts.doughnut && (
+                    <div className="chart">
+                        <h4>Total Incidents by Status</h4>
+                        <Doughnut data={doughnutData} options={doughnutOptions} />
+                    </div>
+                )}
 
-                {/* Pie Chart for incidents by elapsed time */}
-                <div className="chart">
-                    <h4>Incidents by Elapsed Time</h4>
-                    <Pie data={timePieData} options={timePieOptions} />
-                </div>
+                {/* Add other chart components as per your requirements */}
+                {visibleCharts.pie && (
+                    <div className="chart">
+                        <h4>Incidents by Elapsed Time</h4>
+                        <Pie data={timePieData} options={timePieOptions} />
+                    </div>
+                )}
 
-                {/* Line Chart for incidents over time */}
-                <div className="chart full-width">
-                    <h4>Incidents Over Time</h4>
-                    <Line data={lineChartData} options={lineChartOptions} />
-                </div>
+                {visibleCharts.line && (
+                    <div className="chart full-width">
+                        <h4>Incidents Over Time</h4>
+                        <Line data={lineChartData} options={lineChartOptions} />
+                    </div>
+                )}
 
-                {/* Grouped Bar Chart for incidents per SBU */}
-                <div className="chart full-width">
-                    <h4>Incidents per SBU (Open, Closed, In Progress)</h4>
-                    <Bar data={sbuGroupedBarData} options={sbuGroupedBarOptions} />
-                </div>
+                {visibleCharts.sbuBar && (
+                    <div className="chart full-width">
+                        <h4>Incidents per SBU (Open, Closed, In Progress)</h4>
+                        <Bar data={sbuGroupedBarData} options={sbuGroupedBarOptions} />
+                    </div>
+                )}
 
-                {/* Stacked Bar Chart for incidents per Category */}
-                <div className="chart full-width">
-                    <h4>Incidents per Category (Backbone, Super Backbone, Distribusi, Access)</h4>
-                    <Bar data={categoryStackedBarData} options={categoryStackedBarOptions} />
-                </div>
+                {visibleCharts.categoryBar && (
+                    <div className="chart full-width">
+                        <h4>Incidents per Category (Backbone, Super Backbone, Distribusi, Access)</h4>
+                        <Bar data={categoryStackedBarData} options={categoryStackedBarOptions} />
+                    </div>
+                )}
             </div>
         </div>
     );

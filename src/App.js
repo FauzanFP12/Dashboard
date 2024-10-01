@@ -16,10 +16,9 @@ const App = () => {
     // Fetch incidents from API when the app loads
     const getInsidens = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/insidens');
-            setInsidenList(response.data); // Update insiden list
+            const response = await axios.get('http://backend-wine-rho.vercel.app/api/insidens');
+            setInsidenList(response.data); // Update incident list
             calculateChartData(response.data); // Update chart data
-        
         } catch (error) {
             console.error('Error fetching incidents:', error);
         }
@@ -28,17 +27,17 @@ const App = () => {
     // Calculate the chart data based on incidents
     const calculateChartData = (incidents) => {
         const currentTime = new Date();
-        const chartData = incidents.map((insiden) => {
+        const updatedChartData = incidents.map((insiden) => {
             const elapsedMilliseconds = currentTime - new Date(insiden.tanggalStart);
             const elapsedHours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
-            return { ...insiden, elapsedHours };
+            return { ...insiden, elapsedHours }; // Add elapsed time to each incident
         });
-        setChartData(chartData); // Update chart data
+        setChartData(updatedChartData); // Update chart data
     };
 
     // Handler to toggle the sidebar
     const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen); // Toggle sidebar open/close state
+        setIsSidebarOpen((prevState) => !prevState); // Toggle sidebar open/close state
     };
 
     // Fetch the incidents from the API on mount
