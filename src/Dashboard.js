@@ -31,22 +31,51 @@ const Dashboard = ({ insidenList = [] }) => {
     const [isModalOpen, setIsModalOpen] = useState(false); // For showing/hiding the modal
     const [filteredIncidents, setFilteredIncidents] = useState([]); // Store filtered incidents in modal
     const [modalTitle, setModalTitle] = useState(''); // Store modal title
-
     const [statusCount, setStatusCount] = useState({ Open: 0, Closed: 0, InProgress: 0 });
     const [timeCount, setTimeCount] = useState({ under4: 0, under8: 0, under12: 0, under24: 0 });
     const [incidentsOverTime, setIncidentsOverTime] = useState({ labels: [], data: [] });
     const [sbuStatusData, setSbuStatusData] = useState({}); // For storing SBU chart data
     const [sbuCategoryData, setSbuCategoryData] = useState({}); // For storing category chart data
+    const [timeFrame, setTimeFrame] = useState('today'); // State for time frame
 
-    // Calculate the data based on insidenList
+    // Function to filter incidents by selected time frame
+    const filterIncidentsByTimeFrame = (timeFrame) => {
+        const currentTime = new Date();
+        return insidenList.filter((insiden) => {
+            const incidentTime = new Date(insiden.tanggalStart);
+            switch (timeFrame) {
+                case 'today':
+                    return (
+                        incidentTime.getDate() === currentTime.getDate() &&
+                        incidentTime.getMonth() === currentTime.getMonth() &&
+                        incidentTime.getFullYear() === currentTime.getFullYear()
+                    );
+                case 'week':
+                    const startOfWeek = new Date();
+                    startOfWeek.setDate(currentTime.getDate() - currentTime.getDay());
+                    return incidentTime >= startOfWeek && incidentTime <= currentTime;
+                case 'month':
+                    return (
+                        incidentTime.getMonth() === currentTime.getMonth() &&
+                        incidentTime.getFullYear() === currentTime.getFullYear()
+                    );
+                default:
+                    return true;
+            }
+        });
+    };
+
+    // Recalculate data based on timeFrame and insidenList
     useEffect(() => {
+        const filteredIncidents = filterIncidentsByTimeFrame(timeFrame);
+        
         const tempStatusCount = { Open: 0, Closed: 0, InProgress: 0 };
         const tempTimeCount = { under4: 0, under8: 0, under12: 0, under24: 0 };
         const tempIncidentsOverTime = {};
         const tempSbuStatusData = {};
         const tempSbuCategoryData = {};
 
-        insidenList.forEach((insiden) => {
+        filteredIncidents.forEach((insiden) => {
             // Count incidents by status
             if (tempStatusCount[insiden.status] !== undefined) {
                 tempStatusCount[insiden.status] += 1;
@@ -94,7 +123,7 @@ const Dashboard = ({ insidenList = [] }) => {
         setIncidentsOverTime({ labels: sortedDates, data: incidentsData });
         setSbuStatusData(tempSbuStatusData);
         setSbuCategoryData(tempSbuCategoryData);
-    }, [insidenList]);
+    }, [insidenList, timeFrame]); // Add timeFrame to the dependency array
 
     // Function to handle opening the modal and filtering incidents
     const openModalWithType = (type) => {
@@ -320,7 +349,7 @@ const Dashboard = ({ insidenList = [] }) => {
                     <ul>
                         {filteredIncidents.map((insiden, index) => (
                             <li key={index}>
-                                ID: {insiden.idInsiden} | Status: {insiden.status} | Description: {insiden.deskripsi}
+                                ID: {insiden.idInsiden} | Status: {insiden.status} | Description: {insiden.deskripsi} 
                             </li>
                         ))}
                     </ul>
@@ -333,6 +362,9 @@ const Dashboard = ({ insidenList = [] }) => {
             </button>
             <br></br><br></br>
             <br></br>
+
+            {/* Time Frame Selector */}
+            
 
             <div className="ticket-counters">
                 <div className="counter" onClick={() => openModalWithType('All')}>

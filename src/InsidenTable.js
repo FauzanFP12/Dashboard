@@ -115,6 +115,7 @@ const InsidenTable = ({ setChartData }) => {
             const matchesSearchTerm = (insiden.idInsiden && insiden.idInsiden.toLowerCase().includes(searchTerm.toLowerCase())) ||
                 (insiden.deskripsi && insiden.deskripsi.toLowerCase().includes(searchTerm.toLowerCase())) ||
                 (insiden.status && insiden.status.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (insiden.pilihan && insiden.pilihan.toLowerCase().includes(searchTerm.toLowerCase())) ||
                 (insiden.sbu && insiden.sbu.toLowerCase().includes(searchTerm.toLowerCase()));
 
             const elapsedMilliseconds = currentTime - new Date(insiden.tanggalStart);
@@ -334,8 +335,12 @@ const InsidenTable = ({ setChartData }) => {
                                         Edit
                                     </button>
                                     <button
-                                        onClick={() => deleteInsiden(insiden._id)}
-                                        className="button is-danger is-small"
+                                     className="button is-danger is-small"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          deleteInsiden(insiden._id)
+                                        }}
+                                       
                                     >
                                         Delete
                                     </button>

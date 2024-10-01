@@ -11,7 +11,7 @@ import axios from 'axios';
 const App = () => {
     const [insidenList, setInsidenList] = useState([]); // State for incident list
     const [chartData, setChartData] = useState([]); // State for chart data
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to control sidebar visibility
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
 
     // Fetch incidents from API when the app loads
     const getInsidens = async () => {
@@ -56,17 +56,20 @@ const App = () => {
                         <NavLink to="/insiden-table" className={({ isActive }) => isActive ? 'active' : ''}>Insiden Table</NavLink>
                     </nav>
                     <Routes>
+                        {/* Dashboard Route */}
                         <Route 
                             path="/" 
                             element={<Dashboard insidenList={insidenList} chartData={chartData} />} 
                         />
+                        {/* FormInsiden Route */}
                         <Route 
                             path="/form-insiden" 
                             element={<FormInsiden getInsidens={getInsidens} />} 
                         />
+                        {/* Insiden Table Route */}
                         <Route 
                             path="/insiden-table" 
-                            element={<InsidenTable setChartData={setChartData} />} 
+                            element={<InsidenTable setChartData={setChartData} getInsidens={getInsidens} />} 
                         />
                     </Routes>
                 </div>
