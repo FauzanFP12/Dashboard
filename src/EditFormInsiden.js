@@ -39,7 +39,7 @@ const EditFormInsiden = ({ ticket, onEdit }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:5000/api/insidens/${ticket._id}`, formData);
+            const response = await axios.put(`https://backend-wine-rho.vercel.app/api/insidens/${ticket._id}`, formData);
             onEdit(response.data); // Pass the updated incident back to the parent
         } catch (error) {
             console.error('Error updating incident:', error);

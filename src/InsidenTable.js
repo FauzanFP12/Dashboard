@@ -24,7 +24,7 @@ const InsidenTable = ({ setChartData }) => {
     // Function to fetch incidents from the API
     const fetchIncidents = async () => {
         try {
-            const response = await axios.get('http://backend-wine-rho.vercel.app/api/insidens');
+            const response = await axios.get('https://backend-wine-rho.vercel.app/api/insidens');
             const incidents = response.data;
             setInsidens(incidents);
             setFilteredInsidens(incidents); // Initialize filtered data with all incidents
@@ -151,7 +151,7 @@ const InsidenTable = ({ setChartData }) => {
     // Function to delete an incident
     const deleteInsiden = async (id) => {
         try {
-            await axios.delete(`http://backend-wine-rho.vercel.app/api/insidens/${id}`);
+            await axios.delete(`https://backend-wine-rho.vercel.app/api/insidens/${id}`);
             fetchIncidents(); // Refresh the list after deletion
         } catch (error) {
             console.error('Error deleting incident:', error);
@@ -217,7 +217,7 @@ const InsidenTable = ({ setChartData }) => {
     // Function to handle editing an incident
     const handleEditIncident = async (updatedIncident) => {
         try {
-            await axios.put(`http://backend-wine-rho.vercel.app/api/insidens/${updatedIncident._id}`, updatedIncident);
+            await axios.put(`https://backend-wine-rho.vercel.app/api/insidens/${updatedIncident._id}`, updatedIncident);
             fetchIncidents(); // Refresh the list after saving changes
             setShowEditModal(false); // Close the edit modal
             setCurrentIncident(null); // Clear the current incident

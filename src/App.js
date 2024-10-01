@@ -16,7 +16,7 @@ const App = () => {
     // Fetch incidents from API when the app loads
     const getInsidens = async () => {
         try {
-            const response = await axios.get('http://backend-wine-rho.vercel.app/api/insidens');
+            const response = await axios.get('https://backend-wine-rho.vercel.app/api/insidens');
             setInsidenList(response.data); // Update incident list
             calculateChartData(response.data); // Update chart data
         } catch (error) {
