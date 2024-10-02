@@ -11,16 +11,20 @@ import axios from 'axios';
 const App = () => {
     const [insidenList, setInsidenList] = useState([]); // State for incident list
     const [chartData, setChartData] = useState([]); // State for chart data
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar closed by default
+    const [loading, setLoading] = useState(false); // State to control loading indicator
 
     // Fetch incidents from API when the app loads
     const getInsidens = async () => {
+        setLoading(true); // Start loading
         try {
             const response = await axios.get('https://backend-wine-rho.vercel.app/api/insidens');
             setInsidenList(response.data); // Update incident list
             calculateChartData(response.data); // Update chart data
         } catch (error) {
             console.error('Error fetching incidents:', error);
+        } finally {
+            setLoading(false); // End loading
         }
     };
 
@@ -48,30 +52,30 @@ const App = () => {
     return (
         <Router>
             <div className="app-container">
-                <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} /> {/* Pass state and toggle function */}
+                <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+                
                 <div className="main-content">
-                    <Header toggleSidebar={toggleSidebar} /> {/* Add Header */}
-                    <nav className="tabs-navigation">
-                        <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>Dashboard</NavLink>
-                        <NavLink to="/insiden-table" className={({ isActive }) => isActive ? 'active' : ''}>Insiden Table</NavLink>
-                    </nav>
-                    <Routes>
-                        {/* Dashboard Route */}
-                        <Route 
-                            path="/" 
-                            element={<Dashboard insidenList={insidenList} chartData={chartData} />} 
-                        />
-                        {/* FormInsiden Route */}
-                        <Route 
-                            path="/form-insiden" 
-                            element={<FormInsiden getInsidens={getInsidens} />} 
-                        />
-                        {/* Insiden Table Route */}
-                        <Route 
-                            path="/insiden-table" 
-                            element={<InsidenTable setChartData={setChartData} getInsidens={getInsidens} />} 
-                        />
-                    </Routes>
+                    <Header toggleSidebar={toggleSidebar} />
+                   
+                    
+                    {loading ? ( // Show loading indicator
+                        <div className="loading-indicator">Loading...</div>
+                    ) : (
+                        <Routes>
+                            <Route 
+                                path="/" 
+                                element={<Dashboard insidenList={insidenList} chartData={chartData} />} 
+                            />
+                            <Route 
+                                path="/form-insiden" 
+                                element={<FormInsiden getInsidens={getInsidens} />} 
+                            />
+                            <Route 
+                                path="/insiden-table" 
+                                element={<InsidenTable setChartData={setChartData} getInsidens={getInsidens} />} 
+                            />
+                        </Routes>
+                    )}
                 </div>
             </div>
         </Router>

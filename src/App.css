@@ -45,3 +45,11 @@
 .tabs-navigation a:hover {
   background-color: #e0e0e0;
 }
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #3498db; /* Loading color */
+}

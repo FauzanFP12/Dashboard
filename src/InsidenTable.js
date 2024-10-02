@@ -151,6 +151,7 @@ const InsidenTable = ({ setChartData }) => {
 
     // Function to delete an incident
     const deleteInsiden = async (id) => {
+      
         try {
             await axios.delete(`https://backend-wine-rho.vercel.app/api/insidens/${id}`);
             fetchIncidents(); // Refresh the list after deletion

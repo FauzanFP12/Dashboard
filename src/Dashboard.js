@@ -364,7 +364,11 @@ const Dashboard = ({ insidenList = [] }) => {
             <br></br>
 
             {/* Time Frame Selector */}
-            
+            <div className="time-frame-selector">
+                <button onClick={() => setTimeFrame('today')} className={timeFrame === 'today' ? 'active' : ''}>Today</button>
+                <button onClick={() => setTimeFrame('week')} className={timeFrame === 'week' ? 'active' : ''}>This Week</button>
+                <button onClick={() => setTimeFrame('month')} className={timeFrame === 'month' ? 'active' : ''}>This Month</button>
+            </div>
 
             <div className="ticket-counters">
                 <div className="counter" onClick={() => openModalWithType('All')}>
