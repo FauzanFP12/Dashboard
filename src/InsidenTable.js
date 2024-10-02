@@ -39,12 +39,22 @@ const InsidenTable = ({ setChartData }) => {
         const currentTime = new Date();
         return incidents.map((insiden) => {
             const elapsedMilliseconds = currentTime - new Date(insiden.tanggalStart);
-            const hours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
+            const days = Math.floor(elapsedMilliseconds / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((elapsedMilliseconds / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((elapsedMilliseconds / (1000 * 60)) % 60);
             const seconds = Math.floor((elapsedMilliseconds / 1000) % 60);
-            return `${hours}h ${minutes}m ${seconds}s`;  // Return in 1h 3m 3s format
+            
+            let result = '';
+            
+            if (days > 0) result += `${days}d `;
+            if (hours > 0) result += `${hours}h `;
+            if (minutes > 0) result += `${minutes}m `;
+            if (seconds > 0 || result === '') result += `${seconds}s `; // Selalu tampilkan detik jika waktu lainnya 0
+            
+            return result.trim();  // Menghilangkan spasi berlebih di akhir string
         });
     };
+    
 
     // Update elapsed times every second
     useEffect(() => {
@@ -319,7 +329,11 @@ const InsidenTable = ({ setChartData }) => {
                             <tr key={insiden._id} onClick={() => handleRowClick(insiden)}>
                                 <td>{index + 1}</td>
                                 <td>{insiden.idInsiden}</td>
-                                <td>{insiden.deskripsi}</td>
+                                <td className="description">
+    {insiden.deskripsi.split('\n').map((text, index) => (
+        <p key={index}>{text}</p>
+    ))}
+</td>
                                 <td>{insiden.status}</td>
                                 <td>{new Date(insiden.tanggalStart).toLocaleString()}</td>
                                 <td>{insiden.sbu}</td>

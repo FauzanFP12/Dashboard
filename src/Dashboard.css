@@ -1,108 +1,207 @@
-/* General styles for the dashboard */
+/* Dashboard.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.settings-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #2ecc71;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.time-frame-selector {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.time-frame-selector button {
+    margin: 0 10px;
+    background-color: #ecf0f1;
+    color: #34495e;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px solid transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.time-frame-selector button:hover {
+    background-color: #bdc3c7;
+}
+
+.time-frame-selector button.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #2980b9;
+}
+
 .ticket-counters {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    margin: 40px 20px;
+    gap: 20px;
 }
 
 .counter {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    background-color: white;
     padding: 20px;
+    border-radius: 8px;
     text-align: center;
-    width: 200px;
-    transition: transform 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .counter:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .counter h3 {
-    font-size: 18px;
-    color: #333;
     margin-bottom: 10px;
-    font-weight: bold;
+    font-size: 18px;
+    color: #7f8c8d;
 }
 
 .counter p {
-    font-size: 24px;
-    font-weight: bold;
-    color: #3498db; /* Main accent color */
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
 }
 
-/* Charts container */
 .charts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 40px;
+    margin: 30px 20px;
 }
 
 .chart {
-    background-color: #fff;
+    background-color: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: box-shadow 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 45%;
+    max-width: 600px;
 }
 
 .chart:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.chart.full-width {
+    width: 90%;
+    max-width: 1200px;
 }
 
 .chart h4 {
-    margin-bottom: 20px;
-    font-size: 18px;
-    color: #555;
-    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
 }
 
-.chart canvas {
-    max-width: 100%;
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
-/* Full-width for charts that need extra space */
-.full-width {
-    grid-column: span 2;
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90vw;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Heatmap container */
-.heatmap {
-    background-color: #ffffff;
-    border-radius: 10px;
-    height: flex; /* Adjust height of the heatmap */
-    position: relative;
+.modal h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #34495e;
 }
 
-.settings-button{
-    align-content: center;
-    padding-left: 10px;
-    display: block;
-    float: right;
-    
+.modal ul {
+    padding: 0;
+    list-style-type: none;
 }
 
-/* Responsive design for smaller screens */
+.modal ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.modal ul li:last-child {
+    border-bottom: none;
+}
+
+/* Tooltip Styles */
+.chartjs-tooltip {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Mobile Friendly */
 @media (max-width: 768px) {
     .ticket-counters {
         flex-direction: column;
-        align-items: center;
+        gap: 20px;
     }
 
-    .counter {
+    .chart {
         width: 100%;
-        margin-bottom: 15px;
     }
 
-    .charts {
-        grid-template-columns: 1fr;
+    .chart.full-width {
+        width: 100%;
     }
-
-    .full-width {
-        grid-column: span 1;
-    }
+}
+.settings-button {
+    margin-top: 10px;
+    display: block;
+    margin: 70px auto;
+    background-color: #2e4ecc;
+    padding: 10px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
 }
