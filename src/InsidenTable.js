@@ -388,7 +388,7 @@ const InsidenTable = ({ setChartData }) => {
                         sbu: row['SBU'],
                         pilihan: row['Pilihan'],
                         tanggalStart: row['Tanggal Submit'] ? addGMT7(new Date(formatDate(row['Tanggal Submit']))) : gmt7Date,
-                        tanggalSubmit: row['Tanggal Start'] ? addGMT7(new Date(formatDate(row['Tanggal Start']))) : gmt7Date,
+                        tanggalSubmit: row['Tanggal Start'] ? addGMT8(new Date(formatDate(row['Tanggal Start']))) : gmt7Date,
                         elapsedTimes: elapsedTime < 0 ? elapsedTime : elapsedTime, // Ensure no negative elapsed time
                     };
     
@@ -427,6 +427,11 @@ const InsidenTable = ({ setChartData }) => {
     
     // Add 7 hours to convert to GMT+7
     const addGMT7 = (date) => {
+        const gmt7Offset = 0 * 0 * 0 * 0; // 7 hours in milliseconds
+        return new Date(date.getTime() + gmt7Offset);
+    };
+
+    const addGMT8 = (date) => {
         const gmt7Offset = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
         return new Date(date.getTime() + gmt7Offset);
     };
@@ -533,7 +538,7 @@ const InsidenTable = ({ setChartData }) => {
         { 
             field: 'tanggalStart',  
             headerName: 'Start Date (Submit)',  
-            valueFormatter: (params) => formatDateUTC(params.value), 
+            valueFormatter: (params) => formatDateUTCS(params.value), 
             filter: 'agDateColumnFilter', 
             sortable: true 
         },
