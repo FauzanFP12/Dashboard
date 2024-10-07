@@ -139,7 +139,7 @@ const FormInsiden = ({ addInsiden }) => {
                         sbu: '',
                         pilihan: ''
                     })}
-                >
+                > 
                     Reset
                 </button>
             </form>
