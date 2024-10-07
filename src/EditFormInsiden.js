@@ -7,21 +7,27 @@ const EditFormInsiden = ({ ticket, onEdit }) => {
         idInsiden: '',
         deskripsi: '',
         status: '',
-        tanggalStart: '',
+        tanggalSubmit: '',
         sbu: '',
         pilihan: ''
     });
+
+    // Helper function to format the date for 'datetime-local'
+    const formatDateForInput = (date) => {
+        const d = new Date(date);
+        return d.toISOString().slice(0, 16); // Format the date to 'YYYY-MM-DDTHH:MM'
+    };
 
     // Populate the form with existing ticket data when the component mounts
     useEffect(() => {
         if (ticket) {
             setFormData({
-                idInsiden: ticket.idInsiden,
-                deskripsi: ticket.deskripsi,
-                status: ticket.status,
-                tanggalStart: new Date(ticket.tanggalStart).toISOString().slice(0, 16), // Format for input
-                sbu: ticket.sbu,
-                pilihan: ticket.pilihan
+                idInsiden: ticket.idInsiden || '',
+                deskripsi: ticket.deskripsi || '',
+                status: ticket.status || 'Open',
+                tanggalSubmit: ticket.tanggalSubmit ? formatDateForInput(ticket.tanggalSubmit) : '',
+                sbu: ticket.sbu || '',
+                pilihan: ticket.pilihan || 'Backbone'
             });
         }
     }, [ticket]);
@@ -84,8 +90,8 @@ const EditFormInsiden = ({ ticket, onEdit }) => {
                 <label>Start Date</label>
                 <input
                     type="datetime-local"
-                    name="tanggalStart"
-                    value={formData.tanggalStart}
+                    name="tanggalSubmit"
+                    value={formData.tanggalSubmit}
                     onChange={handleChange}
                     required
                 />

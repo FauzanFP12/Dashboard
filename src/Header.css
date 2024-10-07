@@ -9,11 +9,49 @@
 /* Header Styles */
 .app-header {
     background-color: #3498db;
-    color: white;
+    color: white;a/* Header.css */
+
+    .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+    }
+    
+    .sidebar-toggle {
+        font-size: 24px; /* Large font size for better visibility */
+        padding: 10px;
+        background-color: white;
+        color: #3498db;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        min-width: 50px;  /* Ensure a minimum width */
+        height: 50px;     /* Fixed height */
+        max-width: 50px;  /* Ensure it doesn't expand */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+    
+    .sidebar-toggle:hover {
+        background-color: #2980b9;
+    }
+    
+    .heading {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
     padding: 15px;
     text-align: center;
     display: flex;
     margin-left: -50px;
+    
     justify-content: space-between;
     position: fixed;
     align-items: center;
@@ -44,12 +82,9 @@
    
     box-sizing: border-box;
     z-index: 500; /* Ensure it is below the header */
-    transition: transform 0.3s ease; /* Smooth transition for open/close */
-}
+    }
 
-.sidebar.closed {
-    transform: translateX(-100%); /* Slide sidebar out of view */
-}
+
 
 /* Sidebar Toggle Button */
 .sidebar-toggle {
@@ -73,9 +108,14 @@
     margin-left: 250px; /* Adjust according to sidebar width */
     margin-top: 60px; /* Adjust according to header height */
     padding: 20px;
-    transition: margin-left 0.3s ease; /* Smooth transition for when sidebar is toggled */
+   
 }
 
 .sidebar.closed + .main-content {
     margin-left: 0; /* Remove margin when sidebar is closed */
+}
+.main-content {
+    flex: 1;
+    padding: 20px;
+    margin: 0 auto;
 }

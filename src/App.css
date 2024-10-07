@@ -53,3 +53,8 @@
   font-size: 20px;
   color: #3498db; /* Loading color */
 }
+.main-content {
+  flex: 1;
+  padding: 20px;
+  margin: 0 auto;
+}

@@ -4,13 +4,16 @@ import './FormInsiden.css'; // Import the CSS file
 
 const FormInsiden = ({ addInsiden }) => {
     const [formData, setFormData] = useState({
-        idInsiden: '',        // New field for incident ID
+        idInsiden: '',        // Field for incident ID
         deskripsi: '',
         status: 'Open',
-        tanggalStart: '',
+        tanggalSubmit: '',
         sbu: '',
         pilihan: '',          // Field for selection (backbone, superbackbone, distribusi, access)
     });
+
+    const [loading, setLoading] = useState(false); // State for loading
+    const [errorMessage, setErrorMessage] = useState(''); // State for error message
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,31 +22,45 @@ const FormInsiden = ({ addInsiden }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
+    
         try {
-            // Make API request to save the new incident
-            const response = await axios.post('https://backend-wine-rho.vercel.app/api/insidens', formData);
-            
-            // Call the function passed from the parent component to update the table
-            addInsiden(response.data); // Pass the new incident data to App.js to update state
-
-            // Reset the form after submission
+            // Konversi tanggalSubmit ke UTC sebelum mengirim data
+            const formattedData = {
+                ...formData,
+                // Do not convert to UTC, just send the exact date-time inputted by the user
+                tanggalSubmit: formData.tanggalSubmit, // This remains in local time
+            };
+    
+            const response = await axios.post('https://backend-wine-rho.vercel.app/api/insidens', formattedData);
+    
+            addInsiden(response.data);
+    
+            // Reset form setelah berhasil submit
             setFormData({
                 idInsiden: '',
                 deskripsi: '',
                 status: 'Open',
                 tanggalStart: '',
+                tanggalSubmit: '',
                 sbu: '',
                 pilihan: '',
             });
+    
+            setErrorMessage('');
         } catch (error) {
-            console.error('Error adding incident:', error);
+            setErrorMessage('Error adding incident. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
+    
 
     return (
         <div className="form-container">
             <h2>Add New Incident</h2>
+            {/* Display error message if there is one */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 {/* ID Insiden */}
                 <input
@@ -77,8 +94,8 @@ const FormInsiden = ({ addInsiden }) => {
                 {/* Tanggal Start */}
                 <input
                     type="datetime-local"
-                    name="tanggalStart"
-                    value={formData.tanggalStart}
+                    name="tanggalSubmit"
+                    value={formData.tanggalSubmit}
                     onChange={handleChange}
                     required
                 />
@@ -96,6 +113,7 @@ const FormInsiden = ({ addInsiden }) => {
                     name="pilihan"
                     value={formData.pilihan}
                     onChange={handleChange}
+                    required
                 >
                     <option value="">--Pilih Jenis--</option>
                     <option value="Backbone">Backbone</option>
@@ -105,7 +123,25 @@ const FormInsiden = ({ addInsiden }) => {
                 </select>
 
                 {/* Submit button */}
-                <button type="submit">Add Insiden</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Submitting...' : 'Add Insiden'}
+                </button>
+
+                {/* Reset button */}
+                <button
+                    type="button"
+                    onClick={() => setFormData({
+                        idInsiden: '',
+                        deskripsi: '',
+                        status: 'Open',
+                        tanggalStart: '',
+                        tanggalSubmit: '',
+                        sbu: '',
+                        pilihan: ''
+                    })}
+                >
+                    Reset
+                </button>
             </form>
         </div>
     );

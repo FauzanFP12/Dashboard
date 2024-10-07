@@ -1,213 +1,120 @@
-/* InsidenTable.css */
-
-/* General Styling (Same as previous) */
-.table-container {
-  width: 100%;
-  padding: 20px;
-  margin-top: 80px; /* To avoid overlap with fixed header */
-  background-color: #f9f9f9;
-}
-
-.filter-bar {
+/* Main container for the layout */
+.app-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.search-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  width: 300px;
-}
-
-.elapsed-filter {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: white;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #3498db;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-.button.is-success {
-  background-color: #2ecc71;
-}
-
-.button.is-danger {
-  background-color: #e74c3c;
-}
-
-.button.is-info {
-  background-color: #3498db;
-}
-
-button:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-}
-
-.table-container {
-  overflow-x: auto; /* Enable horizontal scrolling if table overflows */
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.table thead th {
-  background-color: #3498db;
-  color: white;
-  padding: 12px;
-  text-align: left;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.table tbody td {
-  padding: 12px;
-  font-size: 14px;
-  color: #333;
-  border-bottom: 1px solid #e1e1e1;
-}
-
-.table tbody tr:hover {
-  background-color: #f5f5f5;
-}
-
-.table tbody tr td button {
-  margin-right: 5px;
-}
-
-.table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* Allow the description column to wrap long text */
-.table tbody td.description {
-  white-space: normal; /* Allow wrapping for long text */
-  word-wrap: break-word; /* Ensure long words break to avoid overflow */
-  max-width: 300px; /* Optional: limit width to keep the description from taking too much space */
-}
-
-/* Modal Styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 500px;
-  max-width: 90%;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full width for both header and content */
   position: relative;
 }
 
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
+/* Header Styles */
+.app-header {
+  background-color: #3498db;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999; /* Ensure it stays above other elements */
+  height: 80px; /* Consistent height */
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Main content container */
+.main-content {
+  margin-left: 250px; /* Adjusted according to sidebar width */
+  margin-top: 80px; /* Adjust to avoid the header overlap */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Smooth transition for sidebar */
+  width: calc(100% - 250px); /* Ensure the main content takes the full remaining width */
+  overflow-x: auto;
+}
+
+/* When the sidebar is closed, main content takes full width */
+.sidebar.closed + .main-content {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: #3498db;
+  color: #ffffff;
+  padding: 20px;
+  height: 100vh; /* Full height */
+  width: 250px; /* Set width of sidebar */
+  position: fixed; /* Keep it fixed */
+  top: 80px; /* Below the header */
+  left: 0;
+  z-index: 500; /* Ensure it is below the header */
+  transform: translateX(0); /* Sidebar visible initially */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.sidebar.closed {
+  transform: translateX(-250px); /* Hide sidebar by shifting it off-screen */
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 15px; /* Align with the header */
+  left: 10px; /* Position it next to the sidebar */
+  background-color: white;
   border: none;
-  font-size: 24px;
+  color: #3498db;
+  padding: 10px 15px;
   cursor: pointer;
-  color: #e74c3c;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000; /* Ensure the button appears above sidebar */
+  transition: left 0.3s ease; /* Smooth transition */
 }
 
-.modal-close:hover {
-  color: #c0392b;
+/* Main table container inside Insiden Table */
+.ag-theme-alpine {
+  --ag-background-color: white;
+  --ag-odd-row-background-color: #f9f9f9;
+  --ag-header-background-color: #f5f5f5;
+  --ag-row-border-color: #e0e0e0;
+  --ag-font-size: 14px;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  padding: 15px; /* Adjusted padding for better spacing */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow for depth */
+  border-radius: 8px; /* Slight border-radius for a polished look */
 }
 
-/* Responsive Styles */
-
-/* Mobile-friendly table: Enable horizontal scrolling */
+/* Responsive adjustments for filter-bar and buttons */
 @media (max-width: 768px) {
-  .table-container {
-      padding: 10px;
-      overflow-x: auto; /* Make the table scrollable horizontally */
-  }
-
   .filter-bar {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .search-input, .elapsed-filter {
-      width: 100%;
+  .search-input,
+  .elapsed-filter {
+    width: 100%;
+    margin-bottom: 10px;
   }
 
-  .table thead th, .table tbody td {
-      font-size: 12px;
+  button {
+    width: 100%;
+    margin-bottom: 10px;
   }
 
-  .table tbody tr td {
-      padding: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .table tbody td {
-      font-size: 11px;
-      padding: 6px;
-  }
-
-  .table thead th {
-      font-size: 12px;
-      padding: 8px;
+  .modal-content {
+    width: 90%; /* Ensure the modal looks good on smaller screens */
   }
 }
 
-/* InsidenTable.css */
-
-/* Allow the description column to wrap long text and handle paragraph formatting */
-.table tbody td.description {
-    white-space: normal; /* Allow text wrapping */
-    word-wrap: break-word; /* Ensure long words break to avoid overflow */
-    max-width: 280px; /* Optional: limit width to avoid too much space */
-    padding: 12px;
-    line-height: 1.5; /* Adjust line height for readability */
+/* Ag-Grid styling for cell overflow */
+.ag-theme-alpine .ag-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ellipsis when text is too long */
 }
-
-.table tbody td.description p {
-    margin: 0 0 10px; /* Add spacing between paragraphs */
-    color: #333; /* Adjust text color */
-    font-size: 14px; /* Adjust font size if needed */
-}
-
-.table tbody td.description p:last-child {
-    margin-bottom: 0; /* Remove bottom margin from the last paragraph */
-}
-

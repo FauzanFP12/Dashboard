@@ -1,0 +1,195 @@
+import React, { useEffect, useState } from 'react';
+import { Doughnut, Bar, Pie, Line, Bubble, Scatter, Radar } from 'react-chartjs-2';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import sankey from 'highcharts/modules/sankey';
+import treemap from 'highcharts/modules/treemap';
+import heatmap from 'highcharts/modules/heatmap';
+import './Dashboard.css';
+
+// Register Highcharts modules
+heatmap(Highcharts);
+sankey(Highcharts);
+treemap(Highcharts);
+
+const Dashboard = ({ insidenList = [] }) => {
+    const [visibleCharts, setVisibleCharts] = useState({
+        doughnut: true,
+        pie: true,
+        line: true,
+        sbuBar: true,
+        categoryBar: true,
+        bubbleChart: true,       
+        scatterPlot: true,       
+        radarChart: true,        
+        sankeyDiagram: true,  
+        treemapChart: true
+    });
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [filteredIncidents, setFilteredIncidents] = useState([]);
+    const [modalTitle, setModalTitle] = useState('');
+    const [statusCount, setStatusCount] = useState({ Open: 0, Closed: 0, InProgress: 0 });
+    const [timeFrame, setTimeFrame] = useState('today');
+    const [totalIncidents, setTotalIncidents] = useState(0);
+
+    useEffect(() => {
+        const filteredIncidents = filterIncidentsByTimeFrame(timeFrame);
+
+        const tempStatusCount = { Open: 0, Closed: 0, InProgress: 0 };
+
+        filteredIncidents.forEach((insiden) => {
+            if (tempStatusCount[insiden.status] !== undefined) {
+                tempStatusCount[insiden.status] += 1;
+            }
+        });
+
+        setStatusCount(tempStatusCount);
+        setTotalIncidents(filteredIncidents.length);
+    }, [insidenList, timeFrame]);
+
+    const filterIncidentsByTimeFrame = (timeFrame) => {
+        const currentTime = new Date();
+        return insidenList.filter((insiden) => {
+            const incidentTime = new Date(insiden.tanggalStart);
+            switch (timeFrame) {
+                case 'today':
+                    return (
+                        incidentTime.getDate() === currentTime.getDate() &&
+                        incidentTime.getMonth() === currentTime.getMonth() &&
+                        incidentTime.getFullYear() === currentTime.getFullYear()
+                    );
+                case 'week':
+                    const startOfWeek = new Date();
+                    startOfWeek.setDate(currentTime.getDate() - currentTime.getDay());
+                    return incidentTime >= startOfWeek && incidentTime <= currentTime;
+                case 'month':
+                    return (
+                        incidentTime.getMonth() === currentTime.getMonth() &&
+                        incidentTime.getFullYear() === currentTime.getFullYear()
+                    );
+                default:
+                    return true;
+            }
+        });
+    };
+
+    const openModalWithType = (type) => {
+        let filteredData = [];
+        let title = '';
+
+        switch (type) {
+            case 'All':
+                filteredData = insidenList;
+                title = 'All Incidents';
+                break;
+            case 'Open':
+                filteredData = insidenList.filter((insiden) => insiden.status === 'Open');
+                title = 'Open Incidents';
+                break;
+            case 'Closed':
+                filteredData = insidenList.filter((insiden) => insiden.status === 'Closed');
+                title = 'Closed Incidents';
+                break;
+            case 'InProgress':
+                filteredData = insidenList.filter((insiden) => insiden.status === 'InProgress');
+                title = 'In Progress Incidents';
+                break;
+            default:
+                break;
+        }
+
+        setFilteredIncidents(filteredData);
+        setModalTitle(title);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setFilteredIncidents([]);
+    };
+
+    const doughnutData = {
+        labels: ['Open', 'Closed', 'In Progress'],
+        datasets: [
+            {
+                data: [statusCount.Open, statusCount.Closed, statusCount.InProgress],
+                backgroundColor: ['#3498db', '#2ecc71', '#f39c12'],
+            },
+        ],
+    };
+
+    const doughnutOptions = {
+        plugins: {
+            legend: {
+                display: true,
+                position: 'left', // Adjust position here to keep it on the left
+            },
+        },
+    };
+
+    return (
+        <div className="dashboard-container">
+            <div className="time-frame-selector">
+                <button onClick={() => setTimeFrame('today')} className={timeFrame === 'today' ? 'active' : ''}>
+                    Today
+                </button>
+                <button onClick={() => setTimeFrame('week')} className={timeFrame === 'week' ? 'active' : ''}>
+                    This Week
+                </button>
+                <button onClick={() => setTimeFrame('month')} className={timeFrame === 'month' ? 'active' : ''}>
+                    This Month
+                </button>
+            </div>
+
+            <div className="ticket-counters">
+                <div className="counter" onClick={() => openModalWithType('All')}>
+                    <h3>Total Incidents</h3>
+                    <p>{totalIncidents}</p>
+                </div>
+                <div className="counter" onClick={() => openModalWithType('Open')}>
+                    <h3>Open Tickets</h3>
+                    <p>{statusCount.Open}</p>
+                </div>
+                <div className="counter" onClick={() => openModalWithType('Closed')}>
+                    <h3>Closed Tickets</h3>
+                    <p>{statusCount.Closed}</p>
+                </div>
+                <div className="counter" onClick={() => openModalWithType('InProgress')}>
+                    <h3>In Progress Tickets</h3>
+                    <p>{statusCount.InProgress}</p>
+                </div>
+            </div>
+
+            <div className="charts">
+                {visibleCharts.doughnut && (
+                    <div className="chart">
+                        <h4>Status Breakdown</h4>
+                        <Doughnut data={doughnutData} options={doughnutOptions} />
+                    </div>
+                )}
+                {/* Other charts go here */}
+            </div>
+
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="modal-close" onClick={closeModal}>×</button>
+                        <h2>{modalTitle}</h2>
+                        <div className="modal-scrollable">
+                            <ul>
+                                {filteredIncidents.map((insiden, index) => (
+                                    <li key={index}>
+                                        ID: {insiden.idInsiden} | Status: {insiden.status} | Description: {insiden.deskripsi}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Dashboard;
