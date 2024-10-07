@@ -10,7 +10,7 @@ import './Dashboard.css';
 // Register Highcharts modules
 heatmap(Highcharts);
 sankey(Highcharts);
-treemap(Highcharts);
+treemap(Highcharts); 
 
 const Dashboard = ({ insidenList = [] }) => {
     const [visibleCharts, setVisibleCharts] = useState({
