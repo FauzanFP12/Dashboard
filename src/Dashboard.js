@@ -430,7 +430,7 @@ const Dashboard = ({ insidenList = [] }) => {
 
 
     const radarChartData = {
-        labels: ['Backbone', 'Super Backbone', 'Distribusi', 'Access'], // Categories for radar chart
+        labels: ['Backbone', 'SuperBackbone', 'Distribusi', 'Access'], // Categories for radar chart
         datasets: selectedSbu === 'All'
             ? Object.keys(sbuCategoryData).map((sbu, index) => {
                 const { backgroundColor, borderColor } = getColor(index); // Generate unique color for each SBU
@@ -546,22 +546,34 @@ const handleHighchartsClick = (chartType, point) => {
     let title = '';
 
     if (chartType === 'sankey') {
-        // Filter the incidents based on the flow between "from" and "to"
-        filteredTypeData = insidenList.filter(incident => 
-            incident.pilihan === point.from && incident.sbu === point.to
-        );
-        title = `Incidents from ${point.from} to ${point.to}`;
-    
+        // Filter incidents based on the flow between "from" and "to" in Sankey chart
+        if (point.isNode) {
+            // Handle node click (if it's only 'from' or 'to')
+            filteredTypeData = insidenList.filter(incident => 
+                incident.pilihan === point.name || incident.sbu === point.name || incident.status === point.name
+            );
+            title = `Incidents for ${point.name}`;
+        } else {
+            // Handle link click (between 'from' and 'to')
+            filteredTypeData = insidenList.filter(incident =>
+                (incident.pilihan === point.from && incident.sbu === point.to) ||
+                (incident.sbu === point.from && incident.status === point.to)
+            );
+            title = `Incidents from ${point.from} to ${point.to}`;
+        }
+
     } else if (chartType === 'treemap') {
-        // Handle Treemap click based on SBU
+        // Handle Treemap click based on SBU (point.name contains the SBU name)
         filteredTypeData = insidenList.filter(incident => incident.sbu === point.name);
-        title = `Incidents for ${point.name}`;
+        title = `Incidents for SBU: ${point.name}`;
     }
 
+    // Update modal data and open the modal with the filtered incidents
     setFilteredIncidents(filteredTypeData);
     setModalTitle(title);
     setIsModalOpen(true);
 };
+
 
 
 
