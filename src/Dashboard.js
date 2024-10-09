@@ -553,13 +553,13 @@ const handleHighchartsClick = (chartType, point) => {
         // Filter incidents based on the flow between "from" and "to" in Sankey chart
         if (point.isNode) {
             // Handle node click (if it's only 'from' or 'to')
-            filteredTypeData = insidenList.filter(incident => 
+            filteredTypeData = filteredData.filter(incident => 
                 incident.pilihan === point.name || incident.sbu === point.name || incident.status === point.name
             );
             title = `Incidents for ${point.name}`;
         } else {
             // Handle link click (between 'from' and 'to')
-            filteredTypeData = insidenList.filter(incident =>
+            filteredTypeData = filteredData.filter(incident =>
                 (incident.pilihan === point.from && incident.sbu === point.to) ||
                 (incident.sbu === point.from && incident.status === point.to)
             );
@@ -568,7 +568,7 @@ const handleHighchartsClick = (chartType, point) => {
 
     } else if (chartType === 'treemap') {
         // Handle Treemap click based on SBU (point.name contains the SBU name)
-        filteredTypeData = insidenList.filter(incident => incident.sbu === point.name);
+        filteredTypeData = filteredData.filter(incident => incident.sbu === point.name);
         title = `Incidents for SBU: ${point.name}`;
     }
 
@@ -647,7 +647,7 @@ const sankeyChartOptions = {
 
     return (
         <div>
-            <div><br></br></div><div><br></br></div><div><br></br></div>
+           
         <div className="dashboard-container">
             
             {settingsVisible && (
@@ -769,7 +769,7 @@ const sankeyChartOptions = {
 )}
 
                 {visibleCharts.sankeyDiagram && (
-                    <div className="chart full-width">
+                    <div className="chart chart-large">
                         <h4>Sankey Diagram of Incident Flow</h4>
                         <HighchartsReact highcharts={Highcharts} options={sankeyChartOptions} />
                     </div>

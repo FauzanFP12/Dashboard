@@ -42,9 +42,9 @@
     flex: 1;
     text-align: center;
     min-width: 200px;
+    max-width: 300px; /* Restrict maximum width */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-width: calc(50% - 10px); /* This allows 2 counters per row on mobile */
 }
 
 .counter:hover {
@@ -66,11 +66,9 @@
 
 /* Chart Grid */
 .charts {
-    flex: 1;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns per row for desktop */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Flexible column layout */
     gap: 20px;
-    transition: grid-template-columns 0.3s ease;
 }
 
 /* Chart Card */
@@ -104,16 +102,6 @@
     padding: 30px;
 }
 
-.fullscreen .chart h4 {
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    z-index: 100;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
 /* Fullscreen Mode */
 .fullscreen-mode .charts {
     grid-template-columns: 1fr;
@@ -122,8 +110,7 @@
 
 /* Specific Charts span two columns */
 .chart-large {
-    
-    grid-column: span 1.5; /* Make these charts take 2 columns */
+    grid-column: span 2; /* Make these charts take 2 columns */
 }
 
 /* Layout Theme Styles */
@@ -168,8 +155,6 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     border-radius: 5px;
-    flex: 1;
-    margin-right: 10px;
 }
 
 .time-frame-selector button:hover {
@@ -178,10 +163,6 @@
 
 .time-frame-selector button.active {
     background-color: #2c3e50;
-}
-
-.time-frame-selector button:last-child {
-    margin-right: 0;
 }
 
 /* Modal Overlay for Incident List */
@@ -206,7 +187,6 @@
     width: 90%; /* Reduce size for smaller devices */
     position: relative;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
 }
 
 .modal-close {
@@ -248,58 +228,27 @@
 /* Responsive Styles */
 @media (max-width: 1024px) {
     .ticket-counters {
-        flex-direction: row;
         flex-wrap: wrap;
-    }
-
-    .counter {
-        max-width: calc(50% - 10px); /* 2 counters per row on tablet */
+        justify-content: center;
     }
 
     .charts {
-        grid-template-columns: repeat(1, 1fr); /* 2 charts per row for tablet */
-        gap: 15px;
-    }
-
-    .chart-large {
-        grid-column: span 2; /* Maintain large chart spanning 2 columns */
+        grid-template-columns: repeat(2, 1fr); /* 2 charts per row for tablets */
+        gap: 20px;
     }
 }
 
 @media (max-width: 768px) {
-    .ticket-counters {
-        flex-direction: row;
-        flex-wrap: wrap;
+    .charts {
+        grid-template-columns: repeat(1, 1fr); /* 1 chart per row for mobile */
     }
 
     .counter {
-        max-width: calc(50% - 10px); /* 2 counters per row on mobile */
+        max-width: 100%;
     }
 
-    .charts {
-        grid-template-columns: repeat(2, 1fr); /* 2 charts per row on mobile */
-    }
-
-    .chart-large {
-        grid-column: span 2; /* Large chart takes up full width on mobile */
-    }
-
-    .fullscreen-mode .charts {
-        gap: 15px;
-    }
-
-    .counter p {
-        font-size: 20px;
-    }
-
-    .chart.fullscreen {
-        padding: 20px;
-        height: 70vh;
-    }
-
-    .fullscreen-mode .chart.fullscreen {
-        top: 5%;
-        height: 80vh;
+    .time-frame-selector button {
+        flex: 1;
     }
 }
 
@@ -311,35 +260,15 @@
 
     .counter {
         padding: 15px;
-        max-width: calc(50% - 10px); /* 2 counters per row */
-    }
-
-    .counter p {
-        font-size: 18px;
     }
 
     .charts {
-        grid-template-columns: repeat(1, 1fr); /* 2 charts per row on mobile */
-    }
-
-    .chart-large {
-        grid-column: span 1; /* Large chart takes up full width on smaller screens */
-    }
-
-    .fullscreen-mode .chart.fullscreen {
-        padding: 15px;
+        grid-template-columns: 1fr; /* 1 chart per row for very small screens */
     }
 
     .chart.fullscreen {
         top: 10%;
-        padding: 10px;
-    }
-
-    .fullscreen-mode .charts {
-        gap: 10px;
-    }
-
-    .modal-content {
+        height: 80vh;
         padding: 15px;
     }
 }

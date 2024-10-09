@@ -516,6 +516,54 @@ const InsidenTable = ({ setChartData }) => {
             hour12: false, // To ensure 24-hour format
         });
     };
+    const downloadSelectedExcel = () => {
+        if (selectedRows.length === 0) {
+            return alert('Please select incidents to download.');
+        }
+            
+            const formattedData = selectedRows.map(({ id, _v, ...incident }) => ({
+                idInsiden: incident.idInsiden,
+                deskripsi: incident.deskripsi,
+                status: incident.status,
+                sbu: incident.sbu,
+                pilihan: incident.pilihan,
+                tanggalStart: formatDateUTC(incident.tanggalSubmit), // Format tanggal start
+                tanggalSubmit: formatDateUTCS(incident.tanggalStart), // Format tanggal submit
+                elapsedTimes:  formatElapsedTime (incident.elapsedTime)
+            }));
+
+            const headers = [
+                { A: 'ID Ticket'},
+                { B: 'Deskripsi' },
+                { C: 'Status' },
+                { D: 'SBU' },
+                { E: 'Pilihan' },
+                { F: 'Tanggal Start' },
+                { G: 'Tanggal Submit' },
+                { H: 'Waktu Yang Dibutuhkan',}
+            ];
+    
+            const worksheet = XLSX.utils.aoa_to_sheet([ // Using aoa_to_sheet to insert headers
+                headers.map(header => Object.values(header)[0]), // Get header values
+                ...formattedData.map(row => [
+                    row.idInsiden,
+                    row.deskripsi,
+                    row.status,
+                    row.sbu,
+                    row.pilihan,
+                    row.tanggalStart,
+                    row.tanggalSubmit,
+                    row.elapsedTimes
+                ])
+            ]);
+
+        
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Selected Incidents');
+        XLSX.writeFile(workbook, 'selected_incidents.xlsx');
+    };
+
+
     
 
     const columnDefs = [
@@ -659,6 +707,10 @@ const InsidenTable = ({ setChartData }) => {
                     
                     
                     <button onClick={downloadExcel}>Download Excel</button>
+                    <button className="button is-success" onClick={downloadSelectedExcel}>
+                    Download Selected Excel
+                </button>
+
                   
                     <button 
                     className="button is-danger" 
