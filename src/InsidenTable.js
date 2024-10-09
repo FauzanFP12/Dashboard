@@ -18,7 +18,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 const InsidenTable = ({ setChartData }) => {
     const [gridApi, setGridApi] = useState(null);  
     const [gridColumnApi, setGridColumnApi] = useState(null);  
-
+    const [loading, setLoading] = useState(false); // State for loading indicator
     const [insidens, setInsidens] = useState([]);
     const [filteredInsidens, setFilteredInsidens] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,6 +29,8 @@ const InsidenTable = ({ setChartData }) => {
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [currentIncident, setCurrentIncident] = useState(null);
     const [selectedRows, setSelectedRows] = useState([]);
+    const [loadingDelete, setLoadingDelete] = useState(false); // State for delete loading
+    const [loadingUpload, setLoadingUpload] = useState(false); // State for upload loading
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [modalData, setModalData] = useState(null);
     const [elapsedTimeInterval, setElapsedTimeInterval] = useState(null);
@@ -301,7 +303,7 @@ const InsidenTable = ({ setChartData }) => {
             sbu: incident.sbu,
             pilihan: incident.pilihan,
             tanggalStart: formatDateUTC(incident.tanggalSubmit), // Format tanggal start
-            tanggalSubmit: formatDateUTC(incident.tanggalStart), // Format tanggal submit
+            tanggalSubmit: formatDateUTCS(incident.tanggalStart), // Format tanggal submit
             elapsedTimes:  formatElapsedTime (incident.elapsedTime)
         }));
 
@@ -333,37 +335,39 @@ const InsidenTable = ({ setChartData }) => {
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Incidents');
         XLSX.writeFile(workbook, 'incidents.xlsx');
     };
-
+    
     const handleFileUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) {
             alert('Please select a file.');
             return;
         }
-    
+
+        setLoadingUpload(true); // Start loading when file is uploaded
+
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
                 const data = new Uint8Array(event.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
-    
+
                 if (workbook.SheetNames.length === 0) {
                     throw new Error('The Excel file does not contain any sheets.');
                 }
-    
+
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
-    
+
                 if (!worksheet) {
                     throw new Error('Cannot find a valid worksheet in the Excel file.');
                 }
-    
+
                 const jsonData = XLSX.utils.sheet_to_json(worksheet);
-    
+
                 if (jsonData.length === 0) {
                     throw new Error('The Excel sheet is empty.');
                 }
-    
+
                 for (const row of jsonData) {
                     const currentDate = new Date(); // Get current date and time
                     const gmt7Date = addGMT7(currentDate); // Adjust to GMT+7
@@ -391,24 +395,30 @@ const InsidenTable = ({ setChartData }) => {
                         tanggalSubmit: row['Tanggal Start'] ? addGMT8(new Date(formatDate(row['Tanggal Start']))) : gmt7Date,
                         elapsedTimes: elapsedTime < 0 ? elapsedTime : elapsedTime, // Ensure no negative elapsed time
                     };
-    
+
                     if (!newIncident.idInsiden || !newIncident.deskripsi) {
                         throw new Error('Invalid data format in the Excel sheet. Please check the required fields.');
                     }
-    
+
                     await axios.post('https://backend-wine-rho.vercel.app/api/insidens', newIncident);
                 }
-    
+
                 fetchIncidents();
                 alert('Data successfully uploaded and saved to the database!');
+                window.location.reload(); // Refresh the page after successful upload
             } catch (error) {
                 console.error('Error processing the file:', error);
                 alert(`Failed to upload the file: ${error.message}`);
+            } finally {
+                setLoadingUpload(false); // Stop loading after processing
             }
         };
-    
+
         reader.readAsArrayBuffer(file);
     };
+
+   
+
     
     // Utility function to format date strings
     const formatDate = (dateString) => {
@@ -576,32 +586,43 @@ const InsidenTable = ({ setChartData }) => {
         }
     ];
 
-    const createChart = () => {
-        if (selectedRows.length === 0) return alert('Please select data to create a chart.');
+    const handleDeleteSelectedIncidents = async () => {
+    if (selectedRows.length === 0) {
+        return alert('Please select incidents to delete.');
+    }
+    
+    const confirmed = window.confirm('Are you sure you want to delete the selected incidents?');
+    if (!confirmed) return;
+    setLoadingDelete(true); // Start loading when file is uploaded
 
-        const labels = selectedRows.map(d => d.idInsiden);
-        const values = selectedRows.map(d => calculateElapsedTime(d));
 
-        const ctx = document.getElementById('chartCanvas').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Elapsed Time',
-                    data: values,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: { beginAtZero: true }
-                }
+    try {
+        // Ubah menjadi async/await untuk setiap penghapusan individual
+        const deletePromises = selectedRows.map(async (row) => {
+            try {
+                await axios.delete(`https://backend-wine-rho.vercel.app/api/insidens/${row._id}`);
+            } catch (error) {
+                // Tangkap dan log error dari setiap permintaan individu
+                console.error(`Error deleting incident with ID ${row.idInsiden}:`, error);
+                const errorMessage = error.response?.data?.message || error.message || 'Unknown error occurred.';
+                alert(`Failed to delete incident with ID ${row.idInsiden}: ${errorMessage}`);
             }
         });
+      
+        await Promise.all(deletePromises); // Wait until all deletions are done
+            fetchIncidents();  // Refresh data after deletion
+            alert('Selected incidents have been deleted successfully.');
+        } catch (error) {
+            console.error('Error deleting incidents:', error);
+            const errorMessage = error.response?.data?.message || 'An unknown error occurred while deleting the selected incidents.';
+            alert(`Failed to delete incidents: ${errorMessage}`);
+        } finally {
+            setLoadingDelete(false);  // Stop loading after process completes
+        }
     };
+
+
+    
 
     const onGridReady = (params) => {
         setGridApi(params.api);  
@@ -636,6 +657,16 @@ const InsidenTable = ({ setChartData }) => {
                     
                     
                     <button onClick={downloadExcel}>Download Excel</button>
+                  
+                    <button 
+                    className="button is-danger" 
+                    onClick={handleDeleteSelectedIncidents} 
+                    disabled={loadingDelete}>
+                    {loadingDelete ? 'Deleting...' : 'Delete Selected Incidents'}
+                </button>
+
+                
+
 
                     <input
                         type="file"
@@ -643,14 +674,15 @@ const InsidenTable = ({ setChartData }) => {
                         onChange={handleFileUpload}
                         id="fileUpload"
                         style={{ display: 'none' }} // Hide the input, we'll trigger it with a button
-                    />
-
-                    <button 
-                        className="button is-primary mb-3" 
-                        onClick={() => document.getElementById('fileUpload').click()} // Trigger the file input
-                    >
-                        Upload Excel
-                    </button>
+                        
+                    /> 
+            <button 
+                    className="button is-primary" 
+                    onClick={() => document.getElementById('fileUpload').click()} 
+                    disabled={loadingUpload}>
+                    {loadingUpload ? 'Uploading...' : 'Upload Excel'}
+                </button>
+                {loading && <div className="loading-indicator">Loading, please wait...</div>}
                 </div>
                 
                 <AgGridReact
@@ -694,6 +726,7 @@ const InsidenTable = ({ setChartData }) => {
                 {selectedTicket && (
                     <TicketDetails ticket={selectedTicket} onClose={() => setSelectedTicket(null)} />
                 )}
+                
 
                 {showDetailsModal && modalData && (
                     <div className="modal-overlay">

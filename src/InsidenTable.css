@@ -118,3 +118,11 @@
   overflow: hidden;
   text-overflow: ellipsis; /* Show ellipsis when text is too long */
 }
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #3498db; /* Loading color */
+}
