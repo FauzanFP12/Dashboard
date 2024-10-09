@@ -248,17 +248,20 @@ const Dashboard = ({ insidenList = [] }) => {
     const handleChartClick = (dataType, chartData, chartIndex) => {
         let filteredTypeData = [];
         let title = '';
-
+    
+        // Filter data berdasarkan timeFrame yang dipilih
+        const filteredData = filterIncidentsByTimeFrame(timeFrame);
+    
         switch (dataType) {
             case 'status': {
                 const status = chartData.labels[chartIndex];
-                filteredTypeData = insidenList.filter(incident => incident.status === status);
+                filteredTypeData = filteredData.filter(incident => incident.status === status);
                 title = `${status} Incidents`;
                 break;
             }
             case 'elapsedTime': {
                 const timeRange = chartData.labels[chartIndex];
-                filteredTypeData = insidenList.filter(incident => {
+                filteredTypeData = filteredData.filter(incident => {
                     const elapsedMilliseconds = new Date() - new Date(incident.tanggalSubmit);
                     const elapsedHours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
                     switch (timeRange) {
@@ -274,30 +277,31 @@ const Dashboard = ({ insidenList = [] }) => {
             }
             case 'sbu': {
                 const sbu = chartData.labels[chartIndex];
-                filteredTypeData = insidenList.filter(incident => incident.sbu === sbu);
+                filteredTypeData = filteredData.filter(incident => incident.sbu === sbu);
                 title = `Incidents in ${sbu}`;
                 break;
             }
             case 'category': {
                 const category = chartData.labels[chartIndex];
-                filteredTypeData = insidenList.filter(incident => incident.pilihan === category);
+                filteredTypeData = filteredData.filter(incident => incident.pilihan === category);
                 title = `Incidents of ${category}`;
                 break;
             }
             case 'date': {
                 const date = chartData.labels[chartIndex];
-                filteredTypeData = insidenList.filter(incident => new Date(incident.tanggalSubmit).toISOString().split('T')[0] === date);
+                filteredTypeData = filteredData.filter(incident => new Date(incident.tanggalSubmit).toISOString().split('T')[0] === date);
                 title = `Incidents on ${date}`;
                 break;
             }
             default:
                 break;
         }
-
+    
         setFilteredIncidents(filteredTypeData);
         setModalTitle(title);
         setIsModalOpen(true);
     };
+    
 
     const timePieOptions = {
         plugins: {
