@@ -12,11 +12,16 @@ const EditFormInsiden = ({ ticket, onEdit }) => {
         pilihan: ''
     });
 
+    
+
     // Helper function to format the date for 'datetime-local'
     const formatDateForInput = (date) => {
         const d = new Date(date);
+        // Convert to GMT+7 by adding 7 hours to UTC time
+        d.setHours(d.getHours() + 7);
         return d.toISOString().slice(0, 16); // Format the date to 'YYYY-MM-DDTHH:MM'
     };
+    
 
     // Populate the form with existing ticket data when the component mounts
     useEffect(() => {
@@ -45,7 +50,13 @@ const EditFormInsiden = ({ ticket, onEdit }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`https://backend-wine-rho.vercel.app/api/insidens/${ticket._id}`, formData);
+            // Convert the 'tanggalSubmit' back to UTC when submitting
+            const submittedData = { ...formData };
+            const d = new Date(formData.tanggalSubmit);
+            d.setHours(d.getHours() - 0); // Convert back from GMT+7 to UTC
+            submittedData.tanggalSubmit = d.toISOString();
+
+            const response = await axios.put(`https://backend-wine-rho.vercel.app/api/insidens/${ticket._id}`, submittedData);
             onEdit(response.data); // Pass the updated incident back to the parent
         } catch (error) {
             console.error('Error updating incident:', error);

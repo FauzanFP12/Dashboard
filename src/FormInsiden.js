@@ -25,12 +25,15 @@ const FormInsiden = ({ addInsiden }) => {
         setLoading(true);
     
         try {
-            // Konversi tanggalSubmit ke UTC sebelum mengirim data
+            // Konversi tanggalSubmit dari waktu lokal ke UTC -7
+            const localDate = new Date(formData.tanggalSubmit);
+            const utcDate = new Date(localDate.getTime() + 7 * 60 * 60 * 1000 - 25200 * 1000); // Convert to UTC
+    
             const formattedData = {
                 ...formData,
-                // Do not convert to UTC, just send the exact date-time inputted by the user
-                tanggalSubmit: formData.tanggalSubmit, // This remains in local time
+                tanggalSubmit: utcDate.toISOString(), // Kirim dalam format UTC (ISO string)
             };
+    
     
             const response = await axios.post('https://backend-wine-rho.vercel.app/api/insidens', formattedData);
     

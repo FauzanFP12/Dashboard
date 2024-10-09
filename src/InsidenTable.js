@@ -394,7 +394,7 @@ const InsidenTable = ({ setChartData }) => {
                         sbu: row['SBU'],
                         pilihan: row['Pilihan'],
                         tanggalStart: row['Tanggal Submit'] ? addGMT7(new Date(formatDate(row['Tanggal Submit']))) : gmt7Date,
-                        tanggalSubmit: row['Tanggal Start'] ? addGMT8(new Date(formatDate(row['Tanggal Start']))) : gmt7Date,
+                        tanggalSubmit: row['Tanggal Start'] ? addGMT7(new Date(formatDate(row['Tanggal Start']))) : gmt7Date,
                         elapsedTimes: elapsedTime < 0 ? elapsedTime : elapsedTime, // Ensure no negative elapsed time
                     };
 
@@ -591,7 +591,7 @@ const InsidenTable = ({ setChartData }) => {
         { 
             field: 'tanggalSubmit', 
             headerName: 'Start Incident', 
-            valueFormatter: (params) => formatDateUTC(params.value), 
+            valueFormatter: (params) => formatDateUTCS(params.value), 
             filter: 'agDateColumnFilter', 
             sortable: true 
         },
@@ -790,7 +790,7 @@ const InsidenTable = ({ setChartData }) => {
                             <p><strong>ID Insiden:</strong> {modalData.idInsiden}</p>
                             <p><strong>Deskripsi:</strong> {modalData.deskripsi}</p>
                             <p><strong>Status:</strong> {modalData.status}</p>
-                            <p><strong>Start Date:</strong> {formatDateUTCS(modalData.tanggalStart)}</p>
+                            <p><strong>Start Date:</strong> {formatDateUTCS(modalData.tanggalSubmit)}</p>
                             <p><strong>SBU:</strong> {modalData.sbu}</p>
                             <p><strong>Kategori:</strong> {modalData.pilihan}</p>
                         </div>
