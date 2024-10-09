@@ -343,6 +343,8 @@ const InsidenTable = ({ setChartData }) => {
             return;
         }
 
+        
+
         setLoadingUpload(true); // Start loading when file is uploaded
 
         const reader = new FileReader();
@@ -736,7 +738,7 @@ const InsidenTable = ({ setChartData }) => {
                             <p><strong>ID Insiden:</strong> {modalData.idInsiden}</p>
                             <p><strong>Deskripsi:</strong> {modalData.deskripsi}</p>
                             <p><strong>Status:</strong> {modalData.status}</p>
-                            <p><strong>Start Date:</strong> {formatDateUTC(modalData.tanggalStart)}</p>
+                            <p><strong>Start Date:</strong> {formatDateUTCS(modalData.tanggalStart)}</p>
                             <p><strong>SBU:</strong> {modalData.sbu}</p>
                             <p><strong>Kategori:</strong> {modalData.pilihan}</p>
                         </div>
