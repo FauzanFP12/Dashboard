@@ -5,7 +5,7 @@ const Header = ({ toggleSidebar }) => {
     return (
         <header className="app-header">
             <button className="sidebar-toggle" onClick={toggleSidebar}>
-                ☰z
+                ☰
             </button>
             <h1 className="heading">Manajemen Insiden</h1>
         </header>

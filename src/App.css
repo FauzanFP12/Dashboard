@@ -1,9 +1,4 @@
-/* App container */
-.app-container {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
+
 
 /* Main content area */
 .main-content {

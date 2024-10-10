@@ -1,3 +1,4 @@
+/* General styles */
 .dashboard-container {
     padding: 20px;
     background-color: #f4f4f4;
@@ -5,7 +6,6 @@
     transition: background-color 0.5s ease;
 }
 
-/* Layout switcher */
 .theme-toggle {
     text-align: right;
     margin-bottom: 20px;
@@ -29,7 +29,7 @@
 /* Ticket counters */
 .ticket-counters {
     display: flex;
-    justify-content: center; /* Center the counters horizontally */
+    justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 20px;
@@ -42,7 +42,7 @@
     flex: 1;
     text-align: center;
     min-width: 200px;
-    max-width: 300px; /* Restrict maximum width */
+    max-width: 300px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -67,11 +67,10 @@
 /* Chart Grid */
 .charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Flexible column layout */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
-/* Chart Card */
 .chart {
     background-color: #ffffff;
     border-radius: 8px;
@@ -96,7 +95,7 @@
     top: 10%;
     left: 0;
     width: 100%;
-    height: 60vh; /* Adjusted height */
+    height: 60vh;
     overflow: auto;
     background-color: #ffffff;
     padding: 30px;
@@ -110,7 +109,7 @@
 
 /* Specific Charts span two columns */
 .chart-large {
-    grid-column: span 2; /* Make these charts take 2 columns */
+    grid-column: span 2;
 }
 
 /* Layout Theme Styles */
@@ -184,7 +183,7 @@
     padding: 15px;
     border-radius: 8px;
     max-width: 500px;
-    width: 90%; /* Reduce size for smaller devices */
+    width: 90%;
     position: relative;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
@@ -226,32 +225,65 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 1024px) {
-    .ticket-counters {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
 
-    .charts {
-        grid-template-columns: repeat(2, 1fr); /* 2 charts per row for tablets */
-        gap: 20px;
-    }
-}
-
+/* General mobile-first approach */
 @media (max-width: 768px) {
-    .charts {
-        grid-template-columns: repeat(1, 1fr); /* 1 chart per row for mobile */
+    /* Ticket counters responsive adjustments */
+    .ticket-counters {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 15px;
     }
 
     .counter {
         max-width: 100%;
+        padding: 15px;
+    }
+
+    /* Chart grid responsive adjustments */
+    .charts {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    
+
+    /* Fullscreen chart for mobile */
+    .chart.fullscreen {
+        top: 5%;
+        height: 85vh;
+        padding: 15px;
+       
+           
+
+    
+    }
+
+    /* Time frame selectors for mobile */
+    .time-frame-selector {
+        flex-direction: column;
+        gap: 10px;
     }
 
     .time-frame-selector button {
         flex: 1;
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Modal adjustments for mobile */
+    .modal-content {
+        padding: 10px;
+    }
+
+    .modal-scrollable {
+        max-height: 250px;
     }
 }
 
+/* Further mobile adjustments */
 @media (max-width: 480px) {
     .theme-toggle button {
         padding: 6px 10px;
@@ -259,16 +291,40 @@
     }
 
     .counter {
-        padding: 15px;
+        padding: 10px;
     }
 
     .charts {
-        grid-template-columns: 1fr; /* 1 chart per row for very small screens */
+        grid-template-columns: 1fr; /* Ensure charts are displayed one per row on mobile */
+        gap: 15px; /* Adjust the gap between charts */
     }
 
+
     .chart.fullscreen {
-        top: 10%;
+        top: 5%;
         height: 80vh;
         padding: 15px;
+        
+    }
+
+    .modal-content {
+        max-width: 90%;
+    }
+
+    .modal-scrollable {
+        max-height: 200px;
+    }
+}
+
+/* Adjustments for larger tablets */
+@media (max-width: 1024px) {
+    .ticket-counters {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .charts {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 }
