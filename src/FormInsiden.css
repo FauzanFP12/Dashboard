@@ -1,0 +1,175 @@
+/* Table Container */
+.table-container {
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+.table {
+  margin: 0 auto;
+  border-radius: 8px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #4CAF50; /* Green background for header */
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1; /* Light gray on hover */
+}
+
+.no-data {
+  text-align: center;
+  color: #999; /* Gray color for no data text */
+}
+
+.table-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.filter-section, .filter-bar {
+  margin-bottom: 15px;
+}
+
+.filter-section label {
+  margin-right: 10px;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.button.is-success {
+  background-color: #28a745; /* Green for Add button */
+  color: white;
+}
+
+.button.is-danger {
+  background-color: #dc3545; /* Red for Delete button */
+  color: white;
+}
+
+.button.is-info {
+  background-color: #17a2b8; /* Teal for Edit button */
+  color: white;
+}
+
+.table-title {
+  font-size: 1.5rem; /* Larger font for table title */
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Search Bar and Filter */
+.search-bar, .filter-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-input, .elapsed-filter {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.search-input {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.elapsed-filter {
+  width: 150px;
+  margin-right: 10px;
+}
+
+button.is-success.mb-3 {
+  margin-left: 20px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Form Container */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input, select, button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2980b9;
+}

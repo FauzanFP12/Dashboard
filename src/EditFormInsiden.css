@@ -1,0 +1,90 @@
+/* Container for the Edit Form */
+.edit-form {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sama seperti container table */
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 300px; /* Menambahkan tinggi minimum agar form tidak terlalu pendek */
+    max-height: 90vh;  /* Batasi tinggi maksimum form agar tidak terlalu tinggi */
+    overflow-y: auto;  /* Jika konten melebihi tinggi maksimum, tambahkan scroll */
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs, selects, and textareas */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd; /* Menggunakan border konsisten seperti form container */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover and focus effects */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #3498db; /* Warna yang sama dengan button utama */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    outline: none;
+}
+
+/* Textarea for longer inputs */
+.form-group textarea {
+    resize: vertical;
+    min-height: 40px;
+    max-height: 400px; /* Batasi tinggi maksimum agar textarea tidak terlalu tinggi */
+    overflow-y: auto;  /* Tambahkan scroll jika konten terlalu panjang */
+}
+
+/* Button Styling */
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #3498db; /* Konsisten dengan tombol di seluruh sistem */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9; /* Hover effect untuk semua tombol */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .edit-form {
+        padding: 15px;
+        max-width: 100%;
+        min-height: 250px; /* Tinggi minimum untuk layar kecil */
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 14px;
+        padding: 10px; /* Sesuaikan padding di layar kecil */
+    }
+
+    .form-group textarea {
+        min-height: 100px;  /* Sesuaikan tinggi minimum textarea di layar kecil */
+        max-height: 300px;  /* Batasi tinggi maksimum textarea di layar kecil */
+    }
+}

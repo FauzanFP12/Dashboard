@@ -1,0 +1,9 @@
+GET   http://localhost:5000/api/insidens
+
+
+  idInsiden: 'S12',
+  deskripsi: 'y',
+  status: 'Closed',
+  tanggalSubmit: '2024-10-24T10:14',
+  sbu: 'Ka',
+  pilihan: 'SuperBackbone'

@@ -1,0 +1,107 @@
+/* Basic modal styling for the settings dialog */
+.settings-modal {
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+/* Close button */
+.modal-close {
+    color: #aaa; /* Gray */
+    float: right; /* Right align */
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer; /* Pointer on hover */
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: black; /* Change color on hover */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer; /* Pointer on hover */
+}
+
+/* Settings title */
+h2 {
+    margin-top: 0; /* No margin at the top */
+}
+
+/* Form elements */
+.settings-form {
+    display: flex;
+    flex-direction: column; /* Stack form elements */
+}
+
+.settings-form label {
+    margin-bottom: 5px; /* Space between label and input */
+    font-weight: bold; /* Bold labels */
+}
+
+.settings-form input[type="checkbox"] {
+    margin-right: 10px; /* Space between checkbox and label */
+}
+
+/* Input fields */
+.settings-form input[type="text"],
+.settings-form select {
+    padding: 10px; /* Padding for input fields */
+    margin-bottom: 15px; /* Space between inputs */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Larger text for better readability */
+}
+
+/* Buttons */
+.settings-form button {
+    background-color: #3498db; /* Primary button color */
+    color: white; /* White text */
+    padding: 10px 15px; /* Padding for buttons */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 16px; /* Button text size */
+    transition: background-color 0.3s; /* Smooth background color change */
+}
+
+.settings-form button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; /* Take up more space on small screens */
+        padding: 15px; /* Less padding */
+    }
+
+    h2 {
+        font-size: 24px; /* Slightly smaller title */
+    }
+
+    .settings-form input[type="text"],
+    .settings-form select {
+        font-size: 14px; /* Smaller text */
+    }
+
+    .settings-form button {
+        font-size: 14px; /* Smaller button text */
+    }
+}

@@ -1,0 +1,389 @@
+/* General styles */
+.dashboard-container {
+    padding: 20px;
+    background-color: #2c3e50
+    ;
+    min-height: 100vh;
+    transition: background-color 0.5s ease;
+}
+
+.theme-toggle {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.theme-toggle button {
+    padding: 10px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #000000
+    ;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle button:hover {
+    background-color: #000000
+    ;
+}
+
+/* Ticket counters */
+.ticket-counters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.counter {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1 1 200px; /* Flex with minimum width */
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgb(144, 143, 143);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.counter:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.counter h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #555;
+}
+
+.counter p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Chart Grid */
+.charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 20px;
+}
+
+.chart {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.chart:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Fullscreen Chart */
+.chart.fullscreen {
+    grid-column: span 3;
+    transform: scale(1.05);
+    z-index: 999;
+    position: fixed;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 60vh;
+    overflow: auto;
+    background-color: #ffffff;
+    padding: 30px;
+}
+
+/* Fullscreen Mode */
+.fullscreen-mode .charts {
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+/* Specific Charts span two columns */
+.chart-large {
+    grid-column: span 2;
+}
+
+/* Layout Theme Styles */
+.layout1 .dashboard-container {
+    background-color: #f7f7f7;
+}
+
+.layout2 .dashboard-container {
+    background-color: #e8f5e9;
+}
+
+.layout1 .counter {
+    background-color: #f1f8e9;
+}
+
+.layout2 .counter {
+    background-color: #e1bee7;
+}
+
+.layout1 .chart {
+    background-color: #fafafa;
+}
+
+.layout2 .chart {
+    background-color: #efebe9;
+}
+
+/* Time frame selectors */
+.time-frame-selector {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.time-frame-selector button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    flex: 1; /* Ensure buttons are responsive */
+}
+
+.time-frame-selector button:hover {
+    background-color: #2980b9;
+}
+
+.time-frame-selector button.active {
+    background-color: #000000;
+}
+
+/* Modal Overlay for Incident List */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff4d4d;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background-color: #e60000;
+}
+
+.modal-scrollable {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.modal-scrollable ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modal-scrollable li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .ticket-counters {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .counter {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .charts {
+        grid-template-columns: 1fr; /* Ensure charts are displayed one per row */
+        gap: 15px;
+    }
+
+    .chart.fullscreen {
+        top: 5%;
+        height: 85vh;
+        padding: 15px;
+    }
+
+    .time-frame-selector {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .time-frame-selector button {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+
+    .modal-scrollable {
+        max-height: 250px;
+    }
+}
+
+/* Adjustments for larger tablets */
+@media (max-width: 1024px) {
+    .ticket-counters {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .charts {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Top Lists Styles */
+.top-lists {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap; /* Untuk memastikan fleksibilitas pada layar kecil */
+}
+
+.top-priority-list,
+.longest-open-list {
+    flex: 1 1 calc(50% - 20px); /* Membuat lebar list 50% dengan margin 20px */
+    background-color: #ffffff;
+    padding: 0; /* Menghapus padding jika tidak diperlukan */
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    max-height: 410px; /* Tinggi maksimum untuk menampung hingga 5 item */
+    overflow-y: auto; /* Mengaktifkan scrollbar vertikal */
+}
+
+/* Judul dengan posisi sticky */
+.top-priority-list h4,
+.longest-open-list h4 {
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    color: #333;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 20px;
+    background-color: #ffffff; /* Pastikan latar belakang judul tetap terlihat */
+    position: sticky;
+    top: 0; /* Menetapkan posisi judul tetap di atas */
+    z-index: 10; /* Memastikan judul berada di atas konten */
+}
+
+.top-priority-list ul,
+.longest-open-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.top-priority-list li,
+.longest-open-list li {
+    display: flex;
+    justify-content: left;
+    padding: 12px;
+    font-size: 1em;
+    max-height: 50px; /* Sesuaikan tinggi setiap item */
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+.top-priority-list li:hover,
+.longest-open-list li:hover {
+    background-color: #f4f4f4;
+}
+
+.top-priority-list li span,
+.longest-open-list li span {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.top-priority-list li:last-child,
+.longest-open-list li:last-child {
+    border-bottom: none; /* Hilangkan garis bawah pada item terakhir */
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 768px) {
+    .top-priority-list,
+    .longest-open-list {
+        flex: 1 1 100%; /* Lebar penuh pada perangkat kecil */
+        margin-bottom: 20px;
+    }
+}
+
+/* Recent Incidents Styles */
+
+
+.recent-incidents h3 {
+    font-size: 1.5em; /* Ukuran font untuk judul */
+    color: #333; /* Warna teks judul */
+    margin-bottom: 15px; /* Jarak bawah dari judul */
+}
+
+.recent-incidents ul {
+    list-style-type: none; /* Menghilangkan bullet point */
+    padding: 0; /* Menghilangkan padding default */
+}
+
+.recent-incidents li {
+    background-color: #fff; /* Latar belakang putih untuk setiap item */
+    border: 1px solid #e0e0e0; /* Garis border untuk item */
+    border-radius: 4px; /* Sudut membulat untuk item */
+    padding: 10px; /* Padding di dalam item */
+    margin-bottom: 10px; /* Jarak bawah antara item */
+    transition: background-color 0.3s; /* Efek transisi untuk hover */
+}
+
+.recent-incidents li:hover {
+    background-color: #f1f1f1; /* Latar belakang lebih gelap saat hover */
+}

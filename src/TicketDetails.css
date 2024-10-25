@@ -1,0 +1,72 @@
+/* Basic modal styling */
+.ticket-details-modal {
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+/* Close button */
+.modal-close {
+    color: #aaa; /* Gray */
+    float: right; /* Right align */
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer; /* Pointer on hover */
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: black; /* Change color on hover */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer; /* Pointer on hover */
+}
+
+/* Title */
+h2 {
+    margin-top: 0; /* No margin at the top */
+}
+
+/* Ticket details */
+.ticket-details-modal p {
+    font-size: 16px;
+    margin: 10px 0; /* Margin between paragraphs */
+}
+
+/* Strong tag */
+.ticket-details-modal strong {
+    color: #333; /* Dark gray for labels */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; /* Take up more space on small screens */
+        padding: 15px; /* Less padding */
+    }
+
+    h2 {
+        font-size: 24px; /* Slightly smaller title */
+    }
+
+    .ticket-details-modal p {
+        font-size: 14px; /* Smaller text */
+    }
+}

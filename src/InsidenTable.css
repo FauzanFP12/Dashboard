@@ -1,0 +1,314 @@
+/* Container for the entire table and controls */
+.table-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.ag-theme-alpine {
+  width: 100%;
+  height: 600px;
+  margin-right: 100px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments for mobile view */
+@media (max-width: 768px) {
+  .table-container {
+    padding: 10px; /* Reduced padding for mobile */
+  }
+
+  .ag-theme-alpine {
+    height: auto; /* Auto height for mobile */
+    margin-right: 0;
+  }
+
+  /* Adjust filter bar layout for mobile */
+  .filter-bar {
+    flex-direction: column; /* Stack filters vertically */
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .filter-bar input,
+  .filter-bar select,
+  .filter-bar button {
+    width: 100%; /* Full width for inputs on mobile */
+    margin-bottom: 10px; /* Space between inputs */
+  }
+
+  /* Adjust button sizes for mobile */
+  .filter-bar button {
+    padding: 8px; /* Smaller padding for mobile buttons */
+  }
+}
+
+/* Sidebar adjustments for mobile */
+.sidebar {
+  width: 250px; /* Set fixed width for sidebar */
+  transform: translateX(-250px); /* Initially hidden on mobile */
+  transition: transform 0.3s ease; /* Smooth transition for sidebar */
+}
+
+.sidebar.open {
+  transform: translateX(0); /* Slide in when open */
+}
+
+.sidebar-toggle {
+  left: 10px;
+  background-color: white;
+  z-index: 1000;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px; /* Narrower sidebar for mobile */
+  }
+
+  .sidebar-toggle {
+    font-size: 14px; /* Smaller button text for mobile */
+  }
+}
+
+/* Main content adjustments */
+.main-content {
+  margin-left: 250px; /* For desktop view with sidebar */
+  margin-top: 80px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0; /* Full width for content on mobile */
+    padding: 10px;  /* Reduced padding on mobile */
+    width: 100%;    /* Take up full width on mobile */
+  }
+}
+
+/* Modal adjustments for mobile */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  max-width: 90%;
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%; /* Ensure the modal is smaller on mobile */
+    padding: 15px; /* Reduced padding */
+  }
+
+  .modal-close {
+    font-size: 16px; /* Smaller close button text */
+  }
+}
+
+/* Ag-grid adjustments for mobile */
+.ag-theme-alpine {
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  padding: 10px; /* Adjusted padding for mobile */
+}
+
+/* Responsive adjustments for filter-bar and buttons */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column; /* Stack filters vertically */
+    align-items: stretch; /* Stretch to full width */
+  }
+
+  .filter-bar button {
+    width: 100%; /* Full width for buttons on mobile */
+    margin-bottom: 10px; /* Space between buttons */
+  }
+
+  .search-input,
+  .elapsed-filter {
+    width: 100%; /* Full width for inputs on mobile */
+    margin-bottom: 10px; /* Space between inputs */
+  }
+}
+
+/* Loading indicator adjustments */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #3498db;
+}
+
+@media (max-width: 768px) {
+  .loading-indicator {
+    font-size: 16px; /* Reduced font size for loading text on mobile */
+  }
+}
+
+/* Main container for the layout */
+.app-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full width for both header and content */
+  position: relative;
+}
+
+/* Header Styles */
+.app-header {
+  background-color: #3498db;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999; /* Ensure it stays above other elements */
+  height: 80px; /* Consistent height */
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Main content container */
+.main-content {
+  margin-left: 250px; /* Adjusted according to sidebar width */
+  margin-top: 80px; /* Adjust to avoid the header overlap */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Smooth transition for sidebar */
+  width: calc(100% - 250px); /* Ensure the main content takes the full remaining width */
+  overflow-x: auto;
+}
+
+/* When the sidebar is closed, main content takes full width */
+.sidebar.closed + .main-content {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: #3498db;
+  color: #ffffff;
+  padding: 20px;
+  height: 100vh; /* Full height */
+  width: 250px; /* Set width of sidebar */
+  position: fixed; /* Keep it fixed */
+  top: 80px; /* Below the header */
+  left: 0;
+  z-index: 500; /* Ensure it is below the header */
+  transform: translateX(0); /* Sidebar visible initially */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.sidebar.closed {
+  transform: translateX(-250px); /* Hide sidebar by shifting it off-screen */
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 15px; /* Align with the header */
+  left: 10px; /* Position it next to the sidebar */
+  background-color: white;
+  border: none;
+  color: #3498db;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000; /* Ensure the button appears above sidebar */
+  transition: left 0.3s ease; /* Smooth transition */
+}
+
+/* Main table container inside Insiden Table */
+.ag-theme-alpine {
+  --ag-background-color: white;
+  --ag-odd-row-background-color: #f9f9f9;
+  --ag-header-background-color: #f5f5f5;
+  --ag-row-border-color: #e0e0e0;
+  --ag-font-size: 14px;
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  padding: 15px; /* Adjusted padding for better spacing */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow for depth */
+  border-radius: 8px; /* Slight border-radius for a polished look */
+}
+
+/* Ag-Grid styling for cell overflow */
+.ag-theme-alpine .ag-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ellipsis when text is too long */
+}
+
+/* Loading indicator adjustments */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #3498db; /* Loading color */
+}
+
+/* Priority badge styles */
+.priority-badge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+}
+
+.priority-badge.low {
+  background-color: green;
+}
+
+.priority-badge.medium {
+  background-color: orange;
+}
+
+.priority-badge.high {
+  background-color: red;
+}
+/* Button container */
+.button-group {
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap */
+  justify-content: space-between; /* Space between buttons */
+  gap: 10px; /* Gap between buttons */
+  margin-bottom: 10px; /* Add margin below the buttons */
+}
+
+/* Individual buttons */
+.button-group button {
+  flex: 1 1 auto; /* Allow buttons to grow and shrink */
+  min-width: 150px; /* Minimum width for buttons */
+  padding: 10px; /* Consistent padding */
+  text-align: center; /* Center the button text */
+}
+
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+    align-items: stretch; /* Stretch buttons to full width */
+  }
+
+  .button-group button {
+    width: 100%; /* Full width for buttons on mobile */
+    margin-bottom: 10px; /* Space between buttons */
+  }
+}
+

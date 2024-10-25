@@ -1,0 +1,39 @@
+/* Sidebar.css */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%); /* Initially hide the sidebar */
+    z-index: 1000;
+}
+
+.sidebar.open {
+    transform: translateX(0); /* Slide the sidebar into view */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    color: #000000;
+}
+

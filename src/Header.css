@@ -1,0 +1,121 @@
+/* General container for layout */
+.app-container {
+    display: flex;
+    flex-direction: column; /* Make the header and content stack vertically */
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full width for both header and content */
+}
+
+/* Header Styles */
+.app-header {
+    background-color: #34495e;
+    color: white;a/* Header.css */
+
+    .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+    }
+    
+    .sidebar-toggle {
+        font-size: 24px; /* Large font size for better visibility */
+        padding: 10px;
+        background-color: white;
+        color: #3498db;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        min-width: 50px;  /* Ensure a minimum width */
+        height: 50px;     /* Fixed height */
+        max-width: 50px;  /* Ensure it doesn't expand */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+    
+    .sidebar-toggle:hover {
+        background-color: #2980b9;
+    }
+    
+    .heading {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    margin-left: -50px;
+    
+    justify-content: space-between;
+    position: fixed;
+    align-items: center;
+    top:0;
+    z-index: 999; /* Ensure it stays above other elements */
+    height: 80px; /* Consistent height */
+    width: 110%; /* Take full width of the page */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.heading {
+    font-size: 24px;
+    margin: 0;
+    margin-left: -130px;
+    flex-grow: 1; /* Allows the heading to expand and center itself */
+    text-align: center;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #34495e;
+    color: #ffffff;
+    padding: 20px;
+    height: 100vh; /* Full height */
+    width: 250px; /* Set width of sidebar */
+    position: absolute; /* Sidebar will float over content */
+    left: 0;
+   
+    box-sizing: border-box;
+    z-index: 500; /* Ensure it is below the header */
+    }
+
+
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+    background-color: white;
+    border: none;
+    color: #3498db;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000; /* Ensure the button appears above sidebar */
+}
+
+.sidebar-toggle:hover {
+    background-color: #e6e6e6;
+}
+
+/* Main content that should adjust based on sidebar */
+.main-content {
+    margin-left: 250px; /* Adjust according to sidebar width */
+    margin-top: 60px; /* Adjust according to header height */
+    padding: 20px;
+   
+}
+
+.sidebar.closed + .main-content {
+    margin-left: 0; /* Remove margin when sidebar is closed */
+}
+.main-content {
+    flex: 1;
+    padding: 20px;
+    margin: 0 auto;
+}
