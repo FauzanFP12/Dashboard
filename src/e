@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import "./Dashboard.css";
-import { Doughnut, Bar, Pie, Line, Radar } from "react-chartjs-2";
+import React, { useEffect, useState } from 'react';
+import './Dashboard.css';
+import { Doughnut, Bar, Pie, Line, Radar } from 'react-chartjs-2';
 import {
-  Chart as ChartJS,
-  ArcElement,
-  BarElement,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  RadialLinearScale,
-} from "chart.js";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import sankey from "highcharts/modules/sankey";
-import treemap from "highcharts/modules/treemap";
-import heatmap from "highcharts/modules/heatmap";
-import "chartjs-plugin-datalabels";
-import { saveAs } from "file-saver"; // Untuk ekspor file PDF dan Excel
-import Settings from "./Settings";
+    Chart as ChartJS,
+    ArcElement,
+    BarElement,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    Tooltip,
+    Legend,
+    RadialLinearScale,
+} from 'chart.js';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import sankey from 'highcharts/modules/sankey';
+import treemap from 'highcharts/modules/treemap';
+import heatmap from 'highcharts/modules/heatmap';
+import 'chartjs-plugin-datalabels';
+import { saveAs } from 'file-saver'; // Untuk ekspor file PDF dan Excel
+import Settings from './Settings';
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -30,420 +30,346 @@ treemap(Highcharts);
 
 // Register chart.js elements
 ChartJS.register(
-  ArcElement,
-  BarElement,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-  RadialLinearScale
+    ArcElement, BarElement, LineElement, CategoryScale, LinearScale, Tooltip, Legend, RadialLinearScale
 );
 
 const getColor = (index) => {
-  const colors = [
-    "rgba(75, 192, 192, 0.2)",
-    "rgba(255, 99, 132, 0.2)",
-    "rgba(54, 162, 235, 0.2)",
-    "rgba(255, 206, 86, 0.2)",
-    "rgba(153, 102, 255, 0.2)",
-    "rgba(255, 159, 64, 0.2)",
-  ];
-  const borderColors = [
-    "rgba(75, 192, 192, 1)",
-    "rgba(255, 99, 132, 1)",
-    "rgba(54, 162, 235, 1)",
-    "rgba(255, 206, 86, 1)",
-    "rgba(153, 102, 255, 1)",
-    "rgba(255, 159, 64, 1)",
-  ];
-  return {
-    backgroundColor: colors[index % colors.length],
-    borderColor: borderColors[index % borderColors.length],
-  };
+    const colors = [
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ];
+    const borderColors = [
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ];
+    return {
+        backgroundColor: colors[index % colors.length],
+        borderColor: borderColors[index % borderColors.length]
+    };
 };
 
 const Dashboard = ({ insidenList = [] }) => {
-  const [visibleCharts, setVisibleCharts] = useState({
-    doughnut: true,
-    pie: true,
-    line: true,
-    sbuBar: true,
-    categoryBar: true,
-    radarChart: true,
-    sankeyDiagram: true,
-    treemapChart: true,
-  });
-
-  const [settingsVisible, setSettingsVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [filteredIncidents, setFilteredIncidents] = useState([]);
-  const [modalTitle, setModalTitle] = useState("");
-  const [statusCount, setStatusCount] = useState({
-    Open: 0,
-    Closed: 0,
-    InProgress: 0,
-  });
-  const [timeCount, setTimeCount] = useState({
-    under4: 0,
-    under8: 0,
-    under12: 0,
-    under24: 0,
-  });
-  const [incidentsOverTime, setIncidentsOverTime] = useState({
-    labels: [],
-    data: [],
-  });
-
-  const [sbuStatusData, setSbuStatusData] = useState({});
-  const [sbuCategoryData, setSbuCategoryData] = useState({});
-  const [timeFrame, setTimeFrame] = useState("today");
-  const [totalIncidents, setTotalIncidents] = useState(0);
-  const [selectedSbu, setSelectedSbu] = useState("All");
-  const [customStartDate, setCustomStartDate] = useState("");
-  const [customEndDate, setCustomEndDate] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const filteredIncidents = filterIncidentsByTimeFrame(timeFrame);
-
-    const tempStatusCount = { Open: 0, Closed: 0, InProgress: 0 };
-    const tempTimeCount = { under4: 0, under8: 0, under12: 0, under24: 0 };
-    const tempIncidentsOverTime = {};
-    const tempSbuStatusData = {};
-    const tempSbuCategoryData = {};
-
-    filteredIncidents.forEach((insiden) => {
-      if (tempStatusCount[insiden.status] !== undefined) {
-        tempStatusCount[insiden.status] += 1;
-      }
-
-      const elapsedMilliseconds = new Date() - new Date(insiden.tanggalSubmit);
-      const elapsedHours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
-
-      if (elapsedHours < 4) {
-        tempTimeCount.under4 += 1;
-      } else if (elapsedHours < 8) {
-        tempTimeCount.under8 += 1;
-      } else if (elapsedHours < 12) {
-        tempTimeCount.under12 += 1;
-      } else if (elapsedHours < 24) {
-        tempTimeCount.under24 += 1;
-      }
-
-      const dateKey = new Date(insiden.tanggalSubmit)
-        .toISOString()
-        .split("T")[0];
-      if (!tempIncidentsOverTime[dateKey]) {
-        tempIncidentsOverTime[dateKey] = 0;
-      }
-      tempIncidentsOverTime[dateKey] += 1;
-
-      if (!tempSbuStatusData[insiden.sbu]) {
-        tempSbuStatusData[insiden.sbu] = { Open: 0, Closed: 0, InProgress: 0 };
-      }
-      tempSbuStatusData[insiden.sbu][insiden.status] += 1;
-
-      if (!tempSbuCategoryData[insiden.sbu]) {
-        tempSbuCategoryData[insiden.sbu] = {
-          Backbone: 0,
-          SuperBackbone: 0,
-          Distribusi: 0,
-          Access: 0,
-        };
-      }
-      tempSbuCategoryData[insiden.sbu][insiden.pilihan] += 1;
+    const [visibleCharts, setVisibleCharts] = useState({
+        doughnut: true,
+        pie: true,
+        line: true,
+        sbuBar: true,
+        categoryBar: true,
+        radarChart: true,
+        sankeyDiagram: true,
+        treemapChart: true
     });
 
-    const sortedDates = Object.keys(tempIncidentsOverTime).sort();
-    const incidentsData = sortedDates.map(
-      (date) => tempIncidentsOverTime[date]
+    const [settingsVisible, setSettingsVisible] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [filteredIncidents, setFilteredIncidents] = useState([]);
+    const [modalTitle, setModalTitle] = useState('');
+    const [statusCount, setStatusCount] = useState({ Open: 0, Closed: 0, InProgress: 0 });
+    const [timeCount, setTimeCount] = useState({ under4: 0, under8: 0, under12: 0, under24: 0 });
+    const [incidentsOverTime, setIncidentsOverTime] = useState({ labels: [], data: [] });
+    const [sbuStatusData, setSbuStatusData] = useState({});
+    const [sbuCategoryData, setSbuCategoryData] = useState({});
+    const [timeFrame, setTimeFrame] = useState('today');
+    const [totalIncidents, setTotalIncidents] = useState(0);
+    const [selectedSbu, setSelectedSbu] = useState('All');
+    const [customStartDate, setCustomStartDate] = useState('');
+    const [customEndDate, setCustomEndDate] = useState('');
+    const [darkMode, setDarkMode] = useState(false);
+
+    useEffect(() => {
+        const filteredIncidents = filterIncidentsByTimeFrame(timeFrame);
+
+        const tempStatusCount = { Open: 0, Closed: 0, InProgress: 0 };
+        const tempTimeCount = { under4: 0, under8: 0, under12: 0, under24: 0 };
+        const tempIncidentsOverTime = {};
+        const tempSbuStatusData = {};
+        const tempSbuCategoryData = {};
+
+        filteredIncidents.forEach((insiden) => {
+            if (tempStatusCount[insiden.status] !== undefined) {
+                tempStatusCount[insiden.status] += 1;
+            }
+
+            const elapsedMilliseconds = new Date() - new Date(insiden.tanggalSubmit);
+            const elapsedHours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
+
+            if (elapsedHours < 4) {
+                tempTimeCount.under4 += 1;
+            } else if (elapsedHours < 8) {
+                tempTimeCount.under8 += 1;
+            } else if (elapsedHours < 12) {
+                tempTimeCount.under12 += 1;
+            } else if (elapsedHours < 24) {
+                tempTimeCount.under24 += 1;
+            }
+
+            const dateKey = new Date(insiden.tanggalSubmit).toISOString().split('T')[0];
+            if (!tempIncidentsOverTime[dateKey]) {
+                tempIncidentsOverTime[dateKey] = 0;
+            }
+            tempIncidentsOverTime[dateKey] += 1;
+
+            if (!tempSbuStatusData[insiden.sbu]) {
+                tempSbuStatusData[insiden.sbu] = { Open: 0, Closed: 0, InProgress: 0 };
+            }
+            tempSbuStatusData[insiden.sbu][insiden.status] += 1;
+
+            if (!tempSbuCategoryData[insiden.sbu]) {
+                tempSbuCategoryData[insiden.sbu] = { Backbone: 0, SuperBackbone: 0, Distribusi: 0, Access: 0 };
+            }
+            tempSbuCategoryData[insiden.sbu][insiden.pilihan] += 1;
+        });
+
+        const sortedDates = Object.keys(tempIncidentsOverTime).sort();
+        const incidentsData = sortedDates.map((date) => tempIncidentsOverTime[date]);
+
+        setStatusCount(tempStatusCount);
+        setTimeCount(tempTimeCount);
+        setIncidentsOverTime({ labels: sortedDates, data: incidentsData });
+        setSbuStatusData(tempSbuStatusData);
+        setSbuCategoryData(tempSbuCategoryData);
+        setTotalIncidents(filteredIncidents.length);
+    }, [insidenList, timeFrame, customStartDate, customEndDate]);
+
+    const handleSbuSelection = (e) => {
+        setSelectedSbu(e.target.value);
+    };
+
+    const filterIncidentsByTimeFrame = (timeFrame) => {
+        const currentTime = new Date();
+        return insidenList.filter((insiden) => {
+            const incidentTime = new Date(insiden.tanggalSubmit);
+            switch (timeFrame) {
+                case 'today':
+                    return (
+                        incidentTime.getDate() === currentTime.getDate() &&
+                        incidentTime.getMonth() === currentTime.getMonth() &&
+                        incidentTime.getFullYear() === currentTime.getFullYear()
+                    );
+                case 'week':
+                    const startOfWeek = new Date(currentTime);
+                    startOfWeek.setDate(currentTime.getDate() - currentTime.getDay());
+                    return incidentTime >= startOfWeek && incidentTime <= currentTime;
+                case 'month':
+                    return (
+                        incidentTime.getMonth() === currentTime.getMonth() &&
+                        incidentTime.getFullYear() === currentTime.getFullYear()
+                    );
+                case 'custom':
+                    const startDate = new Date(customStartDate);
+                    const endDate = new Date(customEndDate);
+                    return incidentTime >= startDate && incidentTime <= endDate;
+                default:
+                    return true;
+            }
+        });
+    };
+
+    const openModalWithType = (type) => {
+        const filteredData = filterIncidentsByTimeFrame(timeFrame);
+        let filteredTypeData = [];
+        let title = '';
+
+        switch (type) {
+            case 'All':
+                filteredTypeData = filteredData;
+                title = 'All Incidents';
+                break;
+            case 'Open':
+                filteredTypeData = filteredData.filter((insiden) => insiden.status === 'Open');
+                title = 'Open Incidents';
+                break;
+            case 'Closed':
+                filteredTypeData = filteredData.filter((insiden) => insiden.status === 'Closed');
+                title = 'Closed Incidents';
+                break;
+            case 'InProgress':
+                filteredTypeData = filteredData.filter((insiden) => insiden.status === 'InProgress');
+                title = 'In Progress Incidents';
+                break;
+            default:
+                break;
+        }
+
+        setFilteredIncidents(filteredTypeData);
+        setModalTitle(title);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setFilteredIncidents([]);
+    };
+
+    const handleToggleChart = (chart) => {
+        setVisibleCharts((prev) => ({ ...prev, [chart]: !prev[chart] }));
+    };
+
+    const exportToPDF = () => {
+        const doc = new jsPDF();
+        doc.text("Incident Dashboard Report", 20, 10);
+        autoTable(doc, { html: '#incidentTable' });
+        doc.save("incident_report.pdf");
+    };
+
+    const exportToExcel = () => {
+        const csv = filteredIncidents.map((incident) =>
+            [incident.idInsiden, incident.deskripsi, incident.status, incident.sbu].join(',')
+        ).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        saveAs(blob, 'incidents.csv');
+    };
+
+    const toggleDarkMode = () => setDarkMode(!darkMode);
+
+    return (
+        <div className={`dashboard-container ${darkMode ? 'dark-mode' : ''}`}>
+            <div className="header">
+                <h2>Incident Dashboard</h2>
+                <button onClick={toggleDarkMode}>
+                    {darkMode ? 'Light Mode' : 'Dark Mode'}
+                </button>
+            </div>
+
+            <div className="time-frame-selector">
+                <button onClick={() => setTimeFrame('today')} className={timeFrame === 'today' ? 'active' : ''}>
+                    Today
+                </button>
+                <button onClick={() => setTimeFrame('week')} className={timeFrame === 'week' ? 'active' : ''}>
+                    This Week
+                </button>
+                <button onClick={() => setTimeFrame('month')} className={timeFrame === 'month' ? 'active' : ''}>
+                    This Month
+                </button>
+                <div>
+                    <input
+                        type="date"
+                        value={customStartDate}
+                        onChange={(e) => setCustomStartDate(e.target.value)}
+                        placeholder="Start Date"
+                    />
+                    <input
+                        type="date"
+                        value={customEndDate}
+                        onChange={(e) => setCustomEndDate(e.target.value)}
+                        placeholder="End Date"
+                    />
+                    <button onClick={() => setTimeFrame('custom')}>Filter by Date Range</button>
+                </div>
+            </div>
+
+            <div className="ticket-counters">
+                <div className="counter" onClick={() => openModalWithType('All')}>
+                    <h3>Total Incidents</h3>
+                    <p>{totalIncidents}</p>
+                </div>
+                <div className="counter" onClick={() => openModalWithType('Open')}>
+                    <h3>Open Tickets</h3>
+                    <p>{statusCount.Open}</p>
+                </div>
+                <div className="counter" onClick={() => openModalWithType('Closed')}>
+                    <h3>Closed Tickets</h3>
+                    <p>{statusCount.Closed}</p>
+                </div>
+                <div className="counter" onClick={() => openModalWithType('InProgress')}>
+                    <h3>In Progress Tickets</h3>
+                    <p>{statusCount.InProgress}</p>
+                </div>
+            </div>
+
+            <div className="charts">
+                {visibleCharts.doughnut && (
+                    <div className="chart">
+                        <h4>Status Breakdown</h4>
+                        <Doughnut data={doughnutData} options={doughnutOptions} />
+                    </div>
+                )}
+
+                {visibleCharts.treemapChart && (
+                    <div className="chart full-width">
+                        <h4>Incident Breakdown Treemap</h4>
+                        <HighchartsReact highcharts={Highcharts} options={treemapChartOptions} />
+                    </div>
+                )}
+
+                {visibleCharts.pie && (
+                    <div className="chart">
+                        <h4>Incidents by Elapsed Time</h4>
+                        <Pie data={timePieData} options={timePieOptions} />
+                    </div>
+                )}
+
+                <div className={`chart chart-large`} >
+                    <h4>Incidents per SBU (Open, Closed, In Progress)</h4>
+                    <Bar data={sbuGroupedBarData} options={sbuGroupedBarOptions} />
+                </div>
+                <div className={`chart chart-large`}  >
+                    <h4>Incidents per Category (Backbone, Super Backbone, Distribusi, Access)</h4>
+                    <Bar data={categoryStackedBarData} options={categoryStackedBarOptions} />
+                </div>
+                <div className={`chart chart-large`} >
+                    <h4>Incidents Over Time</h4>
+                    <Line data={lineChartData} options={lineChartOptions} />
+                </div>
+
+                {visibleCharts.radarChart && (
+                    <div className="chart full-width">
+                        <h4>Incident Distribution by Category and SBU</h4>
+                        <div className="sbu-dropdown">
+                            <label>Select SBU: </label>
+                            <select value={selectedSbu} onChange={handleSbuSelection}>
+                                <option value="All">All</option>
+                                {Object.keys(sbuCategoryData).map((sbu) => (
+                                    <option key={sbu} value={sbu}>
+                                        {sbu}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <Radar data={radarChartData} options={radarChartOptions} />
+                    </div>
+                )}
+
+                {visibleCharts.sankeyDiagram && (
+                    <div className="chart chart-large">
+                        <h4>Sankey Diagram of Incident Flow</h4>
+                        <HighchartsReact highcharts={Highcharts} options={sankeyChartOptions} />
+                    </div>
+                )}
+                
+                <div className="export-buttons">
+                    <button onClick={exportToPDF}>Export to PDF</button>
+                    <button onClick={exportToExcel}>Export to Excel</button>
+                </div>
+
+                {isModalOpen && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <button className="modal-close" onClick={closeModal}>×</button>
+                            <h2>{modalTitle}</h2>
+                            <div className="modal-scrollable">
+                                <ul>
+                                    {filteredIncidents.map((insiden, index) => (
+                                        <li key={index}>
+                                            ID: {insiden.idInsiden} | Status: {insiden.status} | Description: {insiden.deskripsi}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
     );
-
-
-    setStatusCount(tempStatusCount);
-    setTimeCount(tempTimeCount);
-    setIncidentsOverTime({ labels: sortedDates, data: incidentsData });
-    setSbuStatusData(tempSbuStatusData);
-    setSbuCategoryData(tempSbuCategoryData);
-    setTotalIncidents(filteredIncidents.length);
-  }, [insidenList, timeFrame, customStartDate, customEndDate]);
-
-  const handleSbuSelection = (e) => {
-    setSelectedSbu(e.target.value);
-  };
-
-  const filterIncidentsByTimeFrame = (timeFrame) => {
-    const currentTime = new Date();
-    return insidenList.filter((insiden) => {
-      const incidentTime = new Date(insiden.tanggalSubmit);
-      switch (timeFrame) {
-        case "today":
-          return (
-            incidentTime.getDate() === currentTime.getDate() &&
-            incidentTime.getMonth() === currentTime.getMonth() &&
-            incidentTime.getFullYear() === currentTime.getFullYear()
-          );
-        case "week":
-          const startOfWeek = new Date(currentTime);
-          startOfWeek.setDate(currentTime.getDate() - currentTime.getDay());
-          return incidentTime >= startOfWeek && incidentTime <= currentTime;
-        case "month":
-          return (
-            incidentTime.getMonth() === currentTime.getMonth() &&
-            incidentTime.getFullYear() === currentTime.getFullYear()
-          );
-        case "custom":
-          const startDate = new Date(customStartDate);
-          const endDate = new Date(customEndDate);
-          return incidentTime >= startDate && incidentTime <= endDate;
-        default:
-          return true;
-      }
-    });
-  };
-
-  const openModalWithType = (type) => {
-    const filteredData = filterIncidentsByTimeFrame(timeFrame);
-    let filteredTypeData = [];
-    let title = "";
-
-    switch (type) {
-      case "All":
-        filteredTypeData = filteredData;
-        title = "All Incidents";
-        break;
-      case "Open":
-        filteredTypeData = filteredData.filter(
-          (insiden) => insiden.status === "Open"
-        );
-        title = "Open Incidents";
-        break;
-      case "Closed":
-        filteredTypeData = filteredData.filter(
-          (insiden) => insiden.status === "Closed"
-        );
-        title = "Closed Incidents";
-        break;
-      case "InProgress":
-        filteredTypeData = filteredData.filter(
-          (insiden) => insiden.status === "InProgress"
-        );
-        title = "In Progress Incidents";
-        break;
-      default:
-        break;
-    }
-
-    setFilteredIncidents(filteredTypeData);
-    setModalTitle(title);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setFilteredIncidents([]);
-  };
-
-  const handleToggleChart = (chart) => {
-    setVisibleCharts((prev) => ({ ...prev, [chart]: !prev[chart] }));
-  };
-
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-    doc.text("Incident Dashboard Report", 20, 10);
-    autoTable(doc, { html: "#incidentTable" });
-    doc.save("incident_report.pdf");
-  };
-
-  const exportToExcel = () => {
-    const csv = filteredIncidents
-      .map((incident) =>
-        [
-          incident.idInsiden,
-          incident.deskripsi,
-          incident.status,
-          incident.sbu,
-        ].join(",")
-      )
-      .join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "incidents.csv");
-  };
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
-
-  return (
-    <div className={`dashboard-container ${darkMode ? "dark-mode" : ""}`}>
-      <div className="header">
-        <h2>Incident Dashboard</h2>
-        <button onClick={toggleDarkMode}>
-          {darkMode ? "Light Mode" : "Dark Mode"}
-        </button>
-      </div>
-
-      <div className="time-frame-selector">
-        <button
-          onClick={() => setTimeFrame("today")}
-          className={timeFrame === "today" ? "active" : ""}
-        >
-          Today
-        </button>
-        <button
-          onClick={() => setTimeFrame("week")}
-          className={timeFrame === "week" ? "active" : ""}
-        >
-          This Week
-        </button>
-        <button
-          onClick={() => setTimeFrame("month")}
-          className={timeFrame === "month" ? "active" : ""}
-        >
-          This Month
-        </button>
-        <div>
-          <input
-            type="date"
-            value={customStartDate}
-            onChange={(e) => setCustomStartDate(e.target.value)}
-            placeholder="Start Date"
-          />
-          <input
-            type="date"
-            value={customEndDate}
-            onChange={(e) => setCustomEndDate(e.target.value)}
-            placeholder="End Date"
-          />
-          <button onClick={() => setTimeFrame("custom")}>
-            Filter by Date Range
-          </button>
-        </div>
-      </div>
-
-      <div className="ticket-counters">
-        <div className="counter" onClick={() => openModalWithType("All")}>
-          <h3>Total Incidents</h3>
-          <p>{totalIncidents}</p>
-        </div>
-        <div className="counter" onClick={() => openModalWithType("Open")}>
-          <h3>Open Tickets</h3>
-          <p>{statusCount.Open}</p>
-        </div>
-        <div className="counter" onClick={() => openModalWithType("Closed")}>
-          <h3>Closed Tickets</h3>
-          <p>{statusCount.Closed}</p>
-        </div>
-        <div
-          className="counter"
-          onClick={() => openModalWithType("InProgress")}
-        >
-          <h3>In Progress Tickets</h3>
-          <p>{statusCount.InProgress}</p>
-        </div>
-      </div>
-
-      <div className="charts">
-        {visibleCharts.doughnut && (
-          <div className="chart">
-            <h4>Status Breakdown</h4>
-            <Doughnut data={doughnutData} options={doughnutOptions} />
-          </div>
-        )}
-
-        {visibleCharts.treemapChart && (
-          <div className="chart full-width">
-            <h4>Incident Breakdown Treemap</h4>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={treemapChartOptions}
-            />
-          </div>
-        )}
-
-        {visibleCharts.pie && (
-          <div className="chart">
-            <h4>Incidents by Elapsed Time</h4>
-            <Pie data={timePieData} options={timePieOptions} />
-          </div>
-        )}
-
-        <div className={`chart chart-large`}>
-          <h4>Incidents per SBU (Open, Closed, In Progress)</h4>
-          <Bar data={sbuGroupedBarData} options={sbuGroupedBarOptions} />
-        </div>
-        <div className={`chart chart-large`}>
-          <h4>
-            Incidents per Category (Backbone, Super Backbone, Distribusi,
-            Access)
-          </h4>
-          <Bar
-            data={categoryStackedBarData}
-            options={categoryStackedBarOptions}
-          />
-        </div>
-        <div className={`chart chart-large`}>
-          <h4>Incidents Over Time</h4>
-          <Line data={lineChartData} options={lineChartOptions} />
-        </div>
-
-        {visibleCharts.radarChart && (
-          <div className="chart full-width">
-            <h4>Incident Distribution by Category and SBU</h4>
-            <div className="sbu-dropdown">
-              <label>Select SBU: </label>
-              <select value={selectedSbu} onChange={handleSbuSelection}>
-                <option value="All">All</option>
-                {Object.keys(sbuCategoryData).map((sbu) => (
-                  <option key={sbu} value={sbu}>
-                    {sbu}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <Radar data={radarChartData} options={radarChartOptions} />
-          </div>
-        )}
-
-        {visibleCharts.sankeyDiagram && (
-          <div className="chart chart-large">
-            <h4>Sankey Diagram of Incident Flow</h4>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={sankeyChartOptions}
-            />
-          </div>
-        )}
-
-        <div className="export-buttons">
-          <button onClick={exportToPDF}>Export to PDF</button>
-          <button onClick={exportToExcel}>Export to Excel</button>
-        </div>
-
-        {isModalOpen && (
-       
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <button className="modal-close" onClick={closeModal}>
-                ×
-              </button>
-              <h2>{modalTitle}</h2>
-              <div className="modal-scrollable">
-                <ul>
-                  {filteredIncidents.map((insiden, index) => (
-                    <li key={index}>
-                      ID: {insiden.idInsiden} | Status: {insiden.status} |
-                      Description: {insiden.deskripsi}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-        <div>layoutAlgorithm</div>
-      </div>
-    </div>
-  );
 };
 
 export default Dashboard;
