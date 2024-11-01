@@ -35,7 +35,7 @@ const FormInsiden = ({ addInsiden }) => {
                 tanggalSubmit: utcDate.toISOString(), // Kirim dalam format UTC (ISO string)
             };
 
-            const response = await axios.post('http://localhost:5000/api/insidens', formattedData);
+            const response = await axios.post('http://10.128.168.209:5000/api/insidens', formattedData);
 
             addInsiden(response.data);
 

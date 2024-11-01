@@ -1,10 +1,4 @@
-/* General container for layout */
-.app-container {
-    display: flex;
-    flex-direction: column; /* Make the header and content stack vertically */
-    height: 100vh; /* Full viewport height */
-    width: 100%; /* Full width for both header and content */
-}
+
 
 /* Header Styles */
 .app-header {

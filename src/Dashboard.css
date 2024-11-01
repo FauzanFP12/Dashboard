@@ -387,3 +387,71 @@
 .recent-incidents li:hover {
     background-color: #f1f1f1; /* Latar belakang lebih gelap saat hover */
 }
+
+
+
+.settings-modal {
+    position: relative;      /* Use relative positioning for the modal */
+    color: rgb(252, 252, 252);
+    background-color: white; /* White background for visibility */
+    border-radius: 8px;
+    margin-left: 30%;
+    margin-top: 30%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow for visibility */
+    padding: 20px;
+    justify-content: center;
+    z-index: 1000;          /* Ensure modal appears above other elements */
+    width: 300px;           /* Fixed width */
+    max-height: 30%;
+    max-width: 50%;         /* Responsive width */
+}
+
+.highcharts-credits {
+    display: none;
+  }
+
+
+
+
+/* Modal Header */
+.settings-modal h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Checkbox Labels */
+.settings-modal label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Checkbox Styling */
+.settings-modal input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Close Button */
+.settings-modal button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db; /* Primary color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 20px;
+}
+
+.settings-modal button:hover {
+    background-color: #2980b9; /* Darker shade on hover */
+}
+
+/* Chart Container */
+.charts {
+    margin-top: 20px;
+}

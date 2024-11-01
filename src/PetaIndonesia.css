@@ -1,0 +1,40 @@
+.insiden-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .h2 {
+    color: #f2f2f2;
+
+  }
+
+.margin{
+    margin-top: 100px;
+}
+
+  .insiden-table th,
+  .insiden-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .insiden-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+
+  
+.highcharts-credits {
+  display: none;
+}
+  
+  .insiden-table tr {
+    background-color: #f9f9f9;
+  }
+  
+  .insiden-table tr:hover {
+    background-color: #ddd;
+  }
+  

@@ -59,6 +59,7 @@ const getColor = (index) => {
   };
 };
 
+
 const Dashboard = ({ insidenList = [] }) => {
   const [visibleCharts, setVisibleCharts] = useState({
     doughnut: true,
@@ -69,8 +70,19 @@ const Dashboard = ({ insidenList = [] }) => {
     radarChart: true,
     treemapChart: true,
     topPriority: true,
+    statusChart: true,
+    timePieChart: true,
+    incidentsOverTime: true,
+    incidentPerCategory: true,
+    incidentPerSbu: true,
+    longestOpen: true,
+    topPriority: true,
+    newIncident: true,
+    sbuBarChart: true,
+   
   });
-
+  const [historyLog, setHistoryLog] = useState([]);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredIncidents, setFilteredIncidents] = useState([]);
@@ -260,6 +272,20 @@ const Dashboard = ({ insidenList = [] }) => {
   const handleToggleChart = (chart) => {
     setVisibleCharts((prev) => ({ ...prev, [chart]: !prev[chart] }));
   };
+  // Record history function for tracking status changes
+  const recordHistory = (incidentId, changeDetail) => {
+    const timestamp = new Date().toLocaleString();
+    const newHistory = { incidentId, changeDetail, timestamp, user: 'currentUser' };
+    setHistoryLog((prevLog) => [...prevLog, newHistory]);
+  };
+
+  const handleStatusChange = (incidentId, newStatus) => {
+    recordHistory(incidentId, `Status changed to ${newStatus}`);
+    // Update the status in your data and refresh as needed.
+  };
+
+ 
+
 
   const doughnutData = {
     labels: ["Open", "Closed", "ReOpen"],
@@ -686,6 +712,7 @@ const Dashboard = ({ insidenList = [] }) => {
 
     return result.trim();
   };
+  
 
   const treemapChartOptions = {
     series: [
@@ -731,6 +758,7 @@ const Dashboard = ({ insidenList = [] }) => {
             onClose={() => setSettingsVisible(false)}
           />
         )}
+        
 
         <div className="time-frame-selector">
           <button
@@ -789,7 +817,106 @@ const Dashboard = ({ insidenList = [] }) => {
           </div>
         </div>
 
-        <div className="charts">
+        
+     
+      {/* Button to open settings modal */}
+      <button onClick={() => setShowSettingsModal(!showSettingsModal)}>
+        Customize Dashboard
+      </button>
+
+      {/* Settings modal for dashboard customization */}
+      {showSettingsModal && (
+     
+     <div className="modal-overlay">
+        <div className="settings-modal">
+          <h3>Customize Dashboard</h3>
+          <div><br></br></div>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.doughnut || false}
+              onChange={() => handleToggleChart("doughnut")}
+            />
+            Status Breakdown
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.treemapChart || false}
+              onChange={() => handleToggleChart("treemapChart")}
+            />
+            Indident Breakdown Treemap
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.radarChart || false}
+              onChange={() => handleToggleChart("radarChart")}
+            />
+            Incident Distribution by Category and SBU
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.pie || false}
+              onChange={() => handleToggleChart("pie")}
+            />
+            Indidents by Elapsed Time
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.longestOpen || false}
+              onChange={() => handleToggleChart("longestOpen")}
+            />
+            Top 10 Longest Open Incident
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.topPriority || false}
+              onChange={() => handleToggleChart("topPriority")}
+            />
+            Top 10 Priority Incidents
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.newIncident || false}
+              onChange={() => handleToggleChart("newIncident")}
+            />
+            5 New Incidents
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.incidentsOverTime || false}
+              onChange={() => handleToggleChart("incidentsOverTime")}
+            />
+            Incidents Over Time
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.incidentPerSbu || false}
+              onChange={() => handleToggleChart("incidentPerSbu")}
+            />
+            Incidents per SBU
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleCharts?.incidentPerCategory || false}
+              onChange={() => handleToggleChart("incidentPerCategory")}
+            />
+            Incidents per Category
+          </label>
+          <button onClick={() => setShowSettingsModal(false)}>Close</button>
+        </div>
+        </div>
+      )}
+
+<div className="charts">
           {visibleCharts.doughnut && (
             <div className="chart">
               <h4>Status Breakdown</h4>
@@ -829,11 +956,10 @@ const Dashboard = ({ insidenList = [] }) => {
               <Pie data={timePieData} options={timePieOptions} />
             </div>
           )}
-
+          {visibleCharts.longestOpen && (
           <div className={`chart chart-large`}>
             <div className="top-lists"></div>
-
-            {/* Top 10 Inciden Open Terlama */}
+            
             <div className="longest-open-list">
               <h4>Top 10 Longest Open Incidents</h4>
               <ul>
@@ -848,10 +974,13 @@ const Dashboard = ({ insidenList = [] }) => {
                 ))}
               </ul>
             </div>
-          </div>
+          
+            </div>
+            )}
+            {visibleCharts.topPriority && (
           <div className={`chart chart-large`}>
             <div className="top-lists">
-              {/* Top 10 Prioritas */}
+            
               <div className="top-priority-list">
                 <h4>Top 10 Priority Incidents</h4>
                 <ul>
@@ -866,10 +995,16 @@ const Dashboard = ({ insidenList = [] }) => {
                   ))}
                 </ul>
               </div>
+              
             </div>
           </div>
+          )}
+          {visibleCharts.newIncident && (
           <div className="chart full-width">
+          
           <div className="recent-incidents">
+          
+
         <h3>5 New Incidents</h3>
         <ul>
           {recentIncidents.map((incident) => (
@@ -882,18 +1017,24 @@ const Dashboard = ({ insidenList = [] }) => {
             </li>
           ))}
         </ul>
+        
       </div>
+        
       </div>
-
+      )}
+      {visibleCharts.incidentsOverTime && (
       <div className={`chart chart-large`}>
             <h4>Incidents Over Time</h4>
             <Line data={lineChartData} options={lineChartOptions} />
           </div>
-
+      )}
+      {visibleCharts.incidentPerSbu && (
           <div className={`chart chart-large`}>
             <h4>Incidents per SBU (Open, Closed, Re Open)</h4>
             <Bar data={sbuGroupedBarData} options={sbuGroupedBarOptions} />
           </div>
+      )}
+      {visibleCharts.incidentPerCategory && (
           <div className={`chart chart-large`}>
             <h4>
               Incidents per Category (Backbone, Super Backbone, Distribusi,
@@ -904,6 +1045,7 @@ const Dashboard = ({ insidenList = [] }) => {
               options={categoryStackedBarOptions}
             />
           </div>
+      )}
          
 
           {visibleCharts.paretoChart && (
@@ -935,7 +1077,23 @@ const Dashboard = ({ insidenList = [] }) => {
           )}
         </div>
       </div>
-    </div>
+
+        <div className="history-log">
+          <h3>Audit Trail</h3>
+          <ul>
+            {historyLog.map((entry, index) => (
+              <li key={index}>
+                <strong>ID {entry.incidentId}</strong>: {entry.changeDetail} by {entry.user} on {entry.timestamp}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+     
+
+     
+
+    
   );
 };
 

@@ -11,6 +11,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                             <a href="/">Dashboard</a>
                         </li>
                         <li>
+                            <a href="/map-insiden">Map Insiden</a>
+                        </li>
+                        <li>
                             <a href="/insiden-table">Insiden Table</a>
                         </li>
                     </ul>

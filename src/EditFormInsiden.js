@@ -54,7 +54,7 @@ const EditFormInsiden = ({ ticket, onEdit }) => {
             d.setHours(d.getHours() - 7); // Convert back from GMT+7 to UTC
             submittedData.tanggalSubmit = d.toISOString();
 
-            const response = await axios.put(`http://localhost:5000/api/insidens/${ticket._id}`, submittedData);
+            const response = await axios.put(`http://10.128.168.209:5000/api/insidens/${ticket._id}`, submittedData);
             onEdit(response.data); // Pass the updated incident back to the parent
         } catch (error) {
             console.error('Error updating incident:', error);
