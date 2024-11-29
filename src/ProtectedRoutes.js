@@ -1,17 +1,24 @@
-// ProtectedRoute.js
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ requiredRole, children }) => {
+  // Ambil token dari sessionStorage atau dari sumber lain (misalnya, state global)
   const token = sessionStorage.getItem('token');
   
+  // Ambil peran pengguna dari sessionStorage (atau tempat lain seperti state global)
+  const userRole = sessionStorage.getItem('role');
 
-  // If no token is found, redirect to the login page
+  // Jika tidak ada token, arahkan pengguna ke halaman login
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  // If the user is authenticated, render the requested component
+  // Jika peran pengguna tidak sesuai dengan requiredRole, arahkan ke halaman help
+  if (!requiredRole.includes(userRole)) {
+    return <Navigate to="/help-desk/create" />;
+  }
+
+  // Jika pengguna memiliki token dan peran sesuai, tampilkan komponen yang diminta
   return children;
 };
 
