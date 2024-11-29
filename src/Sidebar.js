@@ -51,11 +51,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                 </ul>
                             )}
                         </li>
-                            {role === 'admin' && (
+                        {role === 'admin' && (
                             <li>
                                <Link to="/register">Register Akun</Link>
                             </li>
-                             )}
                         )}
                     </ul>
                 </nav>
