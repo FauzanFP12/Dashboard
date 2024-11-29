@@ -130,7 +130,7 @@ const App = () => {
                        
         <Route 
                             path="/register" 
-                            element={<Register/>} 
+                            element={<ProtectedRoute><Register/></ProtectedRoute>} 
                             
                         />
                     </Routes>
