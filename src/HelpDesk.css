@@ -1,0 +1,158 @@
+/* HelpDesk.css */
+
+.helpdesk-container {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    
+    max-width: 800px;
+    margin: 100px auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-request-form, .incident-list {
+    margin-bottom: 20px;
+}
+
+.create-request-form h3,
+.incident-list h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.create-request-form input,
+.create-request-form textarea {
+    width: 100%;
+    
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.create-request-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-request-form button:hover {
+    background-color: #0056b3;
+}
+
+.incident-list .incident-item {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.incident-item h4 {
+    margin: 0 0 5px;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.incident-item p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.incident-item button {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.incident-item button:hover {
+    background-color: #218838;
+}
+
+.chat-container {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 65px;
+}
+
+.chat-message {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.chat-input-container {
+    display: flex;
+    margin-top: 10px;
+}
+
+.chat-input-container input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chat-input-container button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.chat-input-container button:hover {
+    background-color: #0056b3;
+}
+
+.no-incidents {
+    text-align: center;
+    color: #666;
+}
+
+  
+  .create-ticket-form h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+    color: #333;
+  }
+  
+  .create-ticket-form input[type="text"] {
+    width: 102%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    
+  }
+
+  .create-ticket-form textarea {
+  
+    
+    margin-right: 10px;
+  }
+
+  .create-ticket-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  
+
+
+
+  

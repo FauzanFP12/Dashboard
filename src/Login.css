@@ -1,0 +1,82 @@
+/* Center the login container */
+.login-container {
+    max-width: 400px;
+    margin: 200px auto 0 auto; /* Adds a 20px top margin */
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: bold;
+    text-align: left;
+}
+
+.custom-input[type="text"],
+.custom-input[type="password"] {
+    padding: 0.75rem;
+   
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+input[type="text"],
+input[type="password"] {
+    padding: 0.75rem;
+   
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 2rem;
+    width: 60%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+button[type="submit"] {
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: #ff4d4f;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+

@@ -1,115 +1,135 @@
-
-
-/* Header Styles */
+/* General Header Styles */
 .app-header {
-    background-color: #34495e;
-    color: white;a/* Header.css */
-
-    .app-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: white;
-    }
-    
-    .sidebar-toggle {
-        font-size: 24px; /* Large font size for better visibility */
-        padding: 10px;
-        background-color: white;
-        color: #3498db;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        min-width: 50px;  /* Ensure a minimum width */
-        height: 50px;     /* Fixed height */
-        max-width: 50px;  /* Ensure it doesn't expand */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s ease;
-    }
-    
-    .sidebar-toggle:hover {
-        background-color: #2980b9;
-    }
-    
-    .heading {
-        margin: 0;
-        font-size: 24px;
-        font-weight: bold;
-    }
-    
-    padding: 15px;
-    text-align: center;
     display: flex;
-    margin-left: -50px;
-    
-    justify-content: space-between;
-    position: fixed;
     align-items: center;
-    top:0;
-    z-index: 999; /* Ensure it stays above other elements */
-    height: 80px; /* Consistent height */
-    width: 110%; /* Take full width of the page */
-    box-sizing: border-box; /* Ensure padding is included in width */
+    justify-content: space-between;
+    padding: 40px 20px;
+    background-color: #3498db;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    height: 80px;
+    box-sizing: border-box;
 }
 
 .heading {
     font-size: 24px;
+    font-weight: bold;
     margin: 0;
-    margin-left: -130px;
-    flex-grow: 1; /* Allows the heading to expand and center itself */
+    flex-grow: 1;
     text-align: center;
+    margin-left: 10px;
 }
-
-/* Sidebar Styles */
-.sidebar {
-    background-color: #34495e;
-    color: #ffffff;
-    padding: 20px;
-    height: 100vh; /* Full height */
-    width: 250px; /* Set width of sidebar */
-    position: absolute; /* Sidebar will float over content */
-    left: 0;
-   
-    box-sizing: border-box;
-    z-index: 500; /* Ensure it is below the header */
-    }
-
-
 
 /* Sidebar Toggle Button */
 .sidebar-toggle {
+    font-size: 24px;
     background-color: white;
     border: none;
     color: #3498db;
-    padding: 10px 15px;
-    cursor: pointer;
-    margin-left: 30px;
+    padding: 10px;
     border-radius: 5px;
-    font-size: 16px;
-    z-index: 1000; /* Ensure the button appears above sidebar */
+    cursor: pointer;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
 }
 
 .sidebar-toggle:hover {
-    background-color: #e6e6e6;
+    background-color: #2980b9;
 }
 
-/* Main content that should adjust based on sidebar */
-.main-content {
-    margin-left: 250px; /* Adjust according to sidebar width */
-    margin-top: 60px; /* Adjust according to header height */
-    padding: 20px;
-   
+/* User Info Section */
+.user-info {
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
-.sidebar.closed + .main-content {
-    margin-left: 0; /* Remove margin when sidebar is closed */
+/* Profile Section */
+.profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
-.main-content {
-    flex: 1;
-    padding: 20px;
-    margin: 0 auto;
+
+.username {
+    margin-left: 10px;
+    margin-right: 7px;
+    font-weight: bold;
+}
+
+.user-profile-picture {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.default-avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background-color: white;
+    color: #3498db;
+    border-radius: 50%;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    border-radius: 5px;
+    min-width: 160px;
+    text-align: center;
+}
+
+.dropdown-menu button {
+    padding: 12px;
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: -10px;
+    background-color: rgb(75, 102, 160);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu button:hover {
+    background-color: #2980b9;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+        padding: 10px;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        margin-top: 60px;
+    }
 }

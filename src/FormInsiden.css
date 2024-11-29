@@ -80,8 +80,9 @@
   margin-bottom: 20px;
 }
 
+
 .search-input, .elapsed-filter {
-  padding: 10px;
+  padding: 0px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ddd;
@@ -90,30 +91,20 @@
 .search-input {
   width: 300px;
   margin-right: 10px;
+  margin-top: 20px;
 }
 
 .elapsed-filter {
   width: 150px;
+  margin-top: 20px;
   margin-right: 10px;
+  margin-bottom:15px;
 }
 
 button.is-success.mb-3 {
   margin-left: 20px;
 }
 
-/* Modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
 
 .modal-content {
   background-color: #fff;
@@ -134,16 +125,7 @@ button.is-success.mb-3 {
   cursor: pointer;
 }
 
-/* Form Container */
-.form-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+
 
 .form-container h2 {
   text-align: center;

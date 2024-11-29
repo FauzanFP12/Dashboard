@@ -1,0 +1,203 @@
+/* General container styling */
+.general-container {
+    margin-top: 80px;
+    font-family: 'Arial', sans-serif;
+    color: #333; /* Default text color */
+    background-color: #ffffff; /* Light background for the overall container */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    transition: all 0.3s ease; /* Smooth transition for any changes in layout or hover */
+}
+
+/* Table styling */
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff; /* White background for the table */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 8px; /* Rounded corners for the table */
+    overflow: hidden; /* Ensures rounded corners are visible */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Table header styling */
+.ticket-table th,
+.ticket-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border: 1px solid #ddd;
+    font-size: 15px; /* Slightly larger font size for better readability */
+}
+
+/* Header styling */
+.ticket-table th {
+    background-color: #007bff; /* Blue header */
+    color: white; /* White text for header */
+    font-weight: bold;
+    text-transform: uppercase; /* Make header text uppercase */
+    cursor: pointer; /* Add pointer cursor to indicate sortable columns */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Header hover effect */
+.ticket-table th:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Table rows styling */
+.ticket-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+/* Hover effect for rows */
+.ticket-table tr:hover {
+    background-color: #f1f1f1; /* Slightly lighter gray */
+    cursor: pointer;
+    transform: scale(1.02); /* Slight zoom effect for hover */
+    transition: transform 0.2s ease; /* Smooth zoom effect */
+}
+
+/* Link styling for "view ticket" */
+.view-ticket-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect for link */
+.view-ticket-link:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Darker blue for hover */
+}
+
+/* Small screen responsiveness */
+@media screen and (max-width: 768px) {
+    .general-container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    .ticket-table {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    .ticket-table th,
+    .ticket-table td {
+        padding: 10px;
+        font-size: 13px; /* Smaller font size on smaller screens */
+    }
+    
+    .view-ticket-link {
+        font-size: 14px; /* Adjust font size for links on smaller screens */
+    }
+}
+
+/* Mobile screen adjustments */
+@media screen and (max-width: 480px) {
+    .ticket-table th,
+    .ticket-table td {
+        padding: 8px;
+        font-size: 12px; /* Further decrease font size on very small screens */
+    }
+
+    .view-ticket-link {
+        font-size: 12px; /* Smaller font size for links on very small screens */
+    }
+}
+
+.view-chat-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.view-chat-button:hover {
+    background-color: #45a049;
+}
+
+.apply-filters-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.apply-filters-btn:hover {
+    background-color: #007B9C;
+}
+
+.admin-assignment {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .admin-assignment h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .admin-assignment select {
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .admin-assignment button {
+    padding: 5px 10px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .admin-assignment button:hover {
+    background-color: #0056b3;
+  }
+  /* General styles for the header */
+.h22 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 20px;
+    text-align: center;
+    
+}
+
+/* Style for the export button aligned to the right */
+.export2 {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: background-color 0.3s ease;
+    display: block; /* Makes the button a block-level element */
+    margin-left: auto; /* Align the button to the right */
+    margin-top: 10px; /* Adds some space from the top */
+}
+
+/* Hover effect for the export button */
+.export2:hover {
+    background-color: #45a049;
+    text-align: center; /* Ensures text inside button is centered */
+}
+
+
+
+  

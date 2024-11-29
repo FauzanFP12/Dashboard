@@ -1,35 +1,33 @@
 /* Container for the Edit Form */
-.edit-form {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sama seperti container table */
-    max-width: 600px;
-    margin: 0 auto;
-    min-height: 300px; /* Menambahkan tinggi minimum agar form tidak terlalu pendek */
-    max-height: 90vh;  /* Batasi tinggi maksimum form agar tidak terlalu tinggi */
-    overflow-y: auto;  /* Jika konten melebihi tinggi maksimum, tambahkan scroll */
-}
 
 /* Form Group Styling */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+    margin-top: -15px;
     font-weight: 600;
     color: #333;
 }
 
 /* Inputs, selects, and textareas */
 .form-group input,
-.form-group select,
+
 .form-group textarea {
-    width: 100%;
+    width: 97%; /* Ensure all elements have full width */
     padding: 15px;
-    border: 1px solid #ddd; /* Menggunakan border konsisten seperti form container */
+    border: 1px solid #ddd; /* Consistent border with form container */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-group select{
+    width: 100%; /* Ensure all elements have full width */
+    padding: 15px;
+    border: 1px solid #ddd; /* Consistent border with form container */
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -39,7 +37,7 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #3498db; /* Warna yang sama dengan button utama */
+    border-color: #3498db; /* Primary button color for focus */
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
     outline: none;
 }
@@ -48,8 +46,8 @@
 .form-group textarea {
     resize: vertical;
     min-height: 40px;
-    max-height: 400px; /* Batasi tinggi maksimum agar textarea tidak terlalu tinggi */
-    overflow-y: auto;  /* Tambahkan scroll jika konten terlalu panjang */
+    max-height: 400px; /* Limit max height for textarea */
+    overflow-y: auto;  /* Add scroll for long content */
 }
 
 /* Button Styling */
@@ -58,14 +56,14 @@ button {
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #3498db; /* Konsisten dengan tombol di seluruh sistem */
+    background-color: #3498db; /* Primary button color */
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #2980b9; /* Hover effect untuk semua tombol */
+    background-color: #2980b9; /* Hover effect for buttons */
 }
 
 /* Responsive Design */
@@ -73,18 +71,23 @@ button:hover {
     .edit-form {
         padding: 15px;
         max-width: 100%;
-        min-height: 250px; /* Tinggi minimum untuk layar kecil */
+        min-height: 250px; /* Minimum height for small screens */
     }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
         font-size: 14px;
-        padding: 10px; /* Sesuaikan padding di layar kecil */
+        padding: 10px; /* Adjust padding for smaller screens */
     }
 
     .form-group textarea {
-        min-height: 100px;  /* Sesuaikan tinggi minimum textarea di layar kecil */
-        max-height: 300px;  /* Batasi tinggi maksimum textarea di layar kecil */
+        min-height: 100px;  /* Adjust minimum height for textarea on smaller screens */
+        max-height: 300px;  /* Limit max height for textarea on smaller screens */
+    }
+
+    button {
+        padding: 8px 12px; /* Adjust button padding for small screens */
+        font-size: 14px; /* Adjust font size for buttons on small screens */
     }
 }

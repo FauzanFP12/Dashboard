@@ -30,6 +30,8 @@ const insidenSchema = new mongoose.Schema({
   priority: { type: String },
 });
 
+
+
 const Insiden = mongoose.model('Insiden', insidenSchema);
 
 export default Insiden;

@@ -1,0 +1,425 @@
+.chat-container {
+    display: flex;
+    width: 99%;
+    height: 85vh;
+}
+
+.ticket-list {
+    width: 25%;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.ticket-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.ticket-item.selected {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.chat-area {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: -20px;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 25px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #e1f5fe;
+}
+
+.message.from-user {
+    background-color: #dcedc8;
+    align-self: flex-end;
+}
+
+.chat-input {
+    
+    align-items: center;
+    gap: 5px;
+    padding-top: 10px;
+}
+
+.chat-input input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chat-input button {
+    padding: 8px;
+    cursor: pointer;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.chat-input input[type="file"] {
+    border: none;
+    padding: 5px;
+}
+
+.ticket-details {
+    width: 30%;
+    padding: 10px;
+    border-left: 1px solid #ddd;
+}
+
+.create-ticket-form input,
+.create-ticket-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.create-ticket-form button {
+    padding: 8px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+
+
+/* Style for image attachment */
+.message-image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* Button styles for file downloads */
+.file-download-btn, .pdf-download-btn {
+    padding: 5px 10px;
+    margin-top: 5px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.file-download-btn:hover, .pdf-download-btn:hover {
+    background-color: #0056b3;
+}
+
+/* File attachment section */
+.file-attachment {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+/* Style the timestamp */
+.timestamp {
+    font-size: 12px;
+    color: #888;
+    text-align: left;
+    
+}
+
+
+.ticket-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.ticket-item:hover {
+    background-color: #f9f9f9;
+}
+
+.ticket-title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.ticket-preview {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Modal overlay styling */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Modal container styling */
+.image-modal {
+    width: 40vw; /* Lebar modal 80% dari viewport */
+    height: 60vh; /* Tinggi modal 80% dari viewport */
+    max-width: 1200px; /* Batas maksimal lebar */
+    max-height: 800px; /* Batas maksimal tinggi */
+    background: rgba(255, 255, 255, 0.44);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Gambar dalam modal */
+.modal-image {
+    width: 70%; /* Gambar mengikuti lebar modal */
+    height: 70%; /* Gambar mengikuti tinggi modal */
+    object-fit: contain; /* Menjaga proporsi gambar */
+    border-radius: 5px;
+}
+
+/* Tombol tutup modal */
+.close-modal-btn {
+    background-color: #ff5252;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.close-modal-btn:hover {
+    background-color: #e53935;
+}
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    
+}
+
+/* Tombol download */
+
+.chat-messages img {
+    max-width: 100%; /* Tidak melebihi lebar kontainer */
+    max-height: 400px; /* Batasi tinggi maksimal */
+    height: auto; /* Jaga rasio gambar */
+    margin: 5px 0;
+    border-radius: 8px; /* Tambahkan sudut bulat jika diinginkan */
+    cursor: pointer; /* Tunjukkan bahwa gambar dapat diklik */
+}
+
+@media (max-width: 600px) {
+    .message {
+        max-width: 80%;
+    }
+}
+.message {
+    max-width: 60%; /* Membatasi lebar pesan */
+    margin: 8px 0; /* Memberi jarak antar pesan */
+    padding: 12px; /* Memberikan ruang yang nyaman di dalam pesan */
+    border-radius: 12px; /* Membuat sudut membulat */
+    font-size: 14px; /* Ukuran font yang pas */
+    line-height: 1.5; /* Membuat teks lebih mudah dibaca */
+    flex-direction: column;
+    display: flex;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan lembut */
+}
+
+.message.from-user {
+    align-self: flex-end; /* Memindahkan pesan pengguna ke kanan */
+    background-color: #c8e6c9; /* Warna hijau lembut */
+    color: #000000; /* Warna teks hijau gelap */
+    margin-left: 40%;
+    border: 1px solid #a5d6a7; /* Warna garis serasi dengan latar belakang */
+    text-align: left; /* Teks tetap rata kiri */
+}
+
+.message.from-support {
+    align-self: flex-start; /* Memindahkan pesan pendukung ke kiri */
+    background-color: #ffffff; /* Warna abu lembut */
+    color: #292929; /* Warna teks abu gelap */
+    border: 1px solid #e0e0e0; /* Warna garis serasi dengan latar belakang */
+    text-align: left; /* Teks tetap rata kiri */
+}
+
+/* Tambahan untuk file gambar dalam pesan */
+.message img {
+    max-width: 100%; /* Membatasi lebar gambar agar tidak melampaui kontainer */
+    max-height: 300px; /* Membatasi tinggi gambar */
+    border-radius: 8px; /* Membuat sudut gambar membulat */
+    margin-top: 8px; /* Jarak antara teks dan gambar */
+    cursor: pointer; /* Memberi indikasi gambar dapat diklik */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Memberi bayangan lembut */
+}
+
+/* Tanda waktu untuk setiap pesan */
+/* Tanda waktu untuk pesan */
+.message .timestamp {
+    font-size: 12px; /* Ukuran font lebih kecil */
+    color: #9e9e9e; /* Warna teks abu-abu lembut */
+    margin-top: 5px; /* Jarak antara pesan dan timestamp */
+    display: block; /* Membuat timestamp tampil di baris baru */
+}
+
+.message.from-user .timestamp {
+    text-align: right; /* Timestamp user di kiri */
+}
+
+.message.from-support .timestamp {
+    text-align: right; /* Timestamp support di kanan */
+}
+
+
+/* Responsif untuk layar kecil */
+@media (max-width: 600px) {
+    .message {
+        max-width: 90%; /* Pesan lebih lebar pada layar kecil */
+        font-size: 13px; /* Ukuran font lebih kecil */
+        padding: 10px; /* Padding lebih kecil */
+    }
+}
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  
+  
+  .send-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    margin-top: -15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .send-btn:hover {
+    background-color: #0056b3;
+  }
+  
+
+  .chat-input {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.custom-input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.file-input {
+  margin-right: 10px;
+}
+
+.send-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  background-color: #0056b3;
+}
+
+.emoji-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #007bff;
+}
+
+.emoji-btn:hover {
+  color: #0056b3;
+}
+
+/* To position the emoji picker correctly when shown */
+.emoji-picker-react {
+  position: absolute;
+  bottom: 60px; /* Adjust the positioning of the emoji picker */
+  left: 10px;
+  z-index: 1000;
+}
+
+button:hover {
+    background-color: transparent;
+  } 
+
+  .new-message-notification {
+    background-color: #f44336;
+    color: white;
+    border-radius: 5px;
+    padding: 0 5px;
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  

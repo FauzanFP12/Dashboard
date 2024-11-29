@@ -35,7 +35,8 @@ const FormInsiden = ({ addInsiden }) => {
                 tanggalSubmit: utcDate.toISOString(), // Kirim dalam format UTC (ISO string)
             };
 
-            const response = await axios.post('http://10.128.168.209:5000/api/insidens', formattedData);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/insidens`, formattedData);
+
 
             addInsiden(response.data);
 
@@ -75,8 +76,9 @@ const FormInsiden = ({ addInsiden }) => {
                     required
                 />
                 {/* Deskripsi */}
-                <input
+                <textarea
                     type="text"
+                    class="custom-input" 
                     name="deskripsi"
                     value={formData.deskripsi}
                     onChange={handleChange}
@@ -102,14 +104,25 @@ const FormInsiden = ({ addInsiden }) => {
                     required
                 />
                 {/* SBU */}
-                <input
-                    type="text"
+                <select
                     name="sbu"
                     value={formData.sbu}
                     onChange={handleChange}
-                    placeholder="Nama SBU"
                     required
-                />
+                >
+                    <option value="">--Pilih SBU--</option>
+                    <option value="JAKARTA & BANTEN">JAKARTA & BANTEN</option>
+                    <option value="KALIMANTAN">KALIMANTAN</option>
+                    <option value="JAWA BAGIAN TENGAH">JAWA BAGIAN TENGAH</option>
+                    <option value="SUMATERA BAGIAN TENGAH">SUMATERA BAGIAN TENGAH</option>
+                    <option value="SUMATERA BAGIAN SELATAN">SUMATERA BAGIAN SELATAN</option>
+                    <option value="JAWA BAGIAN BARAT">JAWA BAGIAN BARAT</option>
+                    <option value="SUMATERA BAGIAN UTARA">SUMATERA BAGIAN UTARA</option>
+                    <option value="SULAWESI & INDONESIA TIMUR">SULAWESI & INDONESIA TIMUR</option>
+                    <option value="JAWA BAGIAN TIMUR">JAWA BAGIAN TIMUR</option>
+                    <option value="BALI & NUSA TENGGARA">BALI & NUSA TENGGARA</option>
+
+                </select>
                 {/* Pilihan (backbone, superbackbone, distribusi, access) */}
                 <select
                     name="pilihan"

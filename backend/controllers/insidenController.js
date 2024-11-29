@@ -1,5 +1,6 @@
 import Insiden from '../models/Insiden.js';
 
+
 // GET all incidents
 export const getInsidens = async (req, res) => {
   try {
@@ -9,6 +10,7 @@ export const getInsidens = async (req, res) => {
     res.status(500).json({ message: 'Error fetching incidents' });
   }
 };
+
 
 // POST a new incident
 export const createInsiden = async (req, res) => {
@@ -113,6 +115,31 @@ export const closeInsiden = async (req, res) => {
     }
 };
 
+export const saveChatMessage = async (req, res) => {
+    const { incidentId } = req.params;  // Get the incident ID from the request parameters
+    const { message } = req.body;  // Get the message content from the request body
+
+    try {
+        // Create a new chat message
+        const newMessage = new Chat({
+            incidentId: incidentId,  // Link this message to the incident
+            sender: 'User',  // For simplicity, this is hardcoded. You may replace it with the logged-in user's info
+            message: message
+        });
+
+        // Save the message to the database
+        await newMessage.save();
+
+        res.status(200).json(newMessage);  // Respond with the saved message
+    } catch (error) {
+        console.error("Error saving chat message:", error);
+        res.status(500).json({ message: 'Error saving chat message', error: error.message });
+    }
+};
+
+
+
+
 // REOPEN an incident and continue tracking elapsed time
 export const reopenInsiden = async (req, res) => {
     const { id } = req.params;
@@ -143,6 +170,51 @@ export const reopenInsiden = async (req, res) => {
         res.json(insiden);
     } catch (err) {
         res.status(500).json({ message: 'Error reopening incident', error: err.message });
+    }
+};
+
+export const moveToQueue = async (req, res) => {
+  const { id } = req.params;  // Get the idInsiden from the URL params
+  console.log('Received idInsiden:', id);  // Log to verify the received idInsiden
+
+  try {
+    // Use findOne to locate the document by idInsiden instead of the default _id field
+    const incident = await Insiden.findOne({ idInsiden: id });
+    
+    if (!incident) {
+      console.log('Incident not found with idInsiden:', id);  // Log when incident is not found
+      return res.status(404).json({ message: 'Incident not found' });
+    }
+
+    // Update the status to "In Queue" and save
+    incident.status = 'In Queue';
+    await incident.save();
+    
+    res.status(200).json(incident);  // Respond with the updated incident
+  } catch (error) {
+    console.error('Error moving incident to queue:', error);  // Log error for debugging
+    res.status(500).json({ message: 'Error moving incident to queue', error: error.message });
+  }
+};
+
+
+
+
+
+export const getChatMessages = async (req, res) => {
+    const { incidentId } = req.params;  // Get the incident ID from the request parameters
+    try {
+        // Find all chat messages related to this incident
+        const messages = await Chat.find({ incidentId: incidentId });
+
+        if (!messages) {
+            return res.status(404).json({ message: 'No chat messages found for this incident' });
+        }
+
+        res.status(200).json(messages);  // Respond with the chat messages
+    } catch (error) {
+        console.error("Error fetching chat messages:", error);
+        res.status(500).json({ message: 'Error fetching chat messages', error: error.message });
     }
 };
 
