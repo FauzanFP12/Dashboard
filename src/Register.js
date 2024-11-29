@@ -1,76 +1,90 @@
+// src/components/Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
+  const [fullName, setFullName] = useState('');
+  const [role, setRole] = useState('user'); // Default role adalah 'user'
+  const [message, setMessage] = useState('');
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validasi password dan konfirmasi password
-    if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match');
-      return;
-    }
+
+    const userData = {
+      username,
+      password,
+      fullName,
+      role, // 'admin' or 'user'
+    };
 
     try {
-      // Kirim data ke backend
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, { username, password });
-      setSuccessMessage('Registration successful! You can now login.');
-      setErrorMessage(''); // Reset error message
-      // Redirect ke halaman login setelah sukses
-      setTimeout(() => navigate('/login'), 2000);  // Setelah 2 detik redirect ke halaman login
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/register`, userData);  // Corrected here
+      setMessage(response.data.message);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error during registration');
-      setSuccessMessage('');
+      setMessage(error.response?.data?.message || 'Terjadi kesalahan');
     }
   };
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      {successMessage && <p className="success">{successMessage}</p>}
+      <h2>Register User</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Username</label>
-          <input 
-            type="text" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            required 
-            placeholder="Enter your username"
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            className="custom-input"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
         <div className="form-group">
-          <label>Password</label>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-            placeholder="Enter your password"
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            className="custom-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <div className="form-group">
-          <label>Confirm Password</label>
-          <input 
-            type="password" 
-            value={confirmPassword} 
-            onChange={(e) => setConfirmPassword(e.target.value)} 
-            required 
-            placeholder="Confirm your password"
+          <label htmlFor="fullName">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            className="custom-input"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
           />
         </div>
-        <button type="submit">Register</button>
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit" className="submit-btn">Register</button>
       </form>
+      {message && (
+        <p className={message.toLowerCase().includes('error') ? 'error-message' : 'success-message'}>
+          {message}
+        </p>
+      )}
     </div>
   );
 };
