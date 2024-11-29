@@ -82,10 +82,9 @@ const App = () => {
                     
                     <Routes>
                         <Route 
-                            path="/" 
-                            element={<ProtectedRoute requiredRole="admin"><Dashboard insidenList={insidenList} chartData={chartData} /></ProtectedRoute>} 
-                            
-                        />
+        path="/" 
+        element={<ProtectedRoute requiredRole="admin"><Dashboard insidenList={insidenList} chartData={chartData} /></ProtectedRoute>} 
+    />
                         <Route 
                             path="/form-insiden" 
                             element={<ProtectedRoute requiredRole="admin"><FormInsiden getInsidens={getInsidens} /></ProtectedRoute>} 
@@ -97,7 +96,7 @@ const App = () => {
 
                         <Route 
                             path="/map-insiden" 
-                            element={<ProtectedRoute><MapIndonesia /></ProtectedRoute>} 
+                            element={<ProtectedRoute requiredRole="admin"><MapIndonesia /></ProtectedRoute>} 
                         />
                         <Route 
                             path="/login" 
@@ -106,22 +105,24 @@ const App = () => {
                         />
                          <Route 
                             path="/help-desk/view" 
-                            element={<ProtectedRoute><General/></ProtectedRoute>} 
+                            element={<ProtectedRoute requiredRole="admin"><General/></ProtectedRoute>} 
                             
                         />
                         <Route 
                             path="/help-desk/create" 
-                            element={<ProtectedRoute><HelpDesk/></ProtectedRoute>} 
+                            element={<ProtectedRoute requiredRole="user"><HelpDesk/></ProtectedRoute>} 
                             
                         />
                          <Route 
                             path="/help-desk/general" 
-                            element={<ProtectedRoute><Chat/></ProtectedRoute>} 
+                            element={<ProtectedRoute requiredRole={['admin', 'user']}><Chat/></ProtectedRoute>} 
                             
                         />
                          <Route 
                             path="/help-desk/close" 
-                            element={<ProtectedRoute><CloseChat/></ProtectedRoute>} 
+                            element={  <ProtectedRoute requiredRole={['admin', 'user']}>
+                            <CloseChat />
+                          </ProtectedRoute>} 
                             
                         />
                          <Route path="/" element={<General />} />
@@ -130,7 +131,7 @@ const App = () => {
                        
         <Route 
                             path="/register" 
-                            element={<ProtectedRoute><Register/></ProtectedRoute>} 
+                            element={<ProtectedRoute requiredRole="admin"><Register/></ProtectedRoute>} 
                             
                         />
                     </Routes>
