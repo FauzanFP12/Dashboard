@@ -29,7 +29,6 @@ const Header = ({ toggleSidebar }) => {
     sessionStorage.removeItem('token'); // Remove the token
     sessionStorage.removeItem('user'); // Remove the user data
     toast.success('Logout successful');  // Display success toast notification
-    window.location.reload(); // Refresh the page
     navigate('/login'); // Redirect to login page
   };
 
