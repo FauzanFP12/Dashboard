@@ -18,6 +18,7 @@ import ProtectedRoute from './ProtectedRoutes';
 
 import ChatView from './ChatView';
 import CloseChatView from './CloseChatView';
+import Register from './Register';
 
 
 
@@ -127,8 +128,13 @@ const App = () => {
         <Route path="/chat" element={<ChatView />} />
         <Route path="/close-chat" element={<CloseChatView />} />
                        
-                      
+        <Route 
+                            path="/register" 
+                            element={<Register/>} 
+                            
+                        />
                     </Routes>
+
                 )}
             </div>
         </div>
