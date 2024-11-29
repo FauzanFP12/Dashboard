@@ -90,18 +90,7 @@ tr:nth-child(even) td {
 }
 
 /* Highlight "Open" and "Closed" with different colors */
-tr:nth-child(1) td:nth-child(2) {
-  color: green; /* Open incidents */
-}
 
-tr:nth-child(2) td:nth-child(2) {
-  color: red; /* Closed incidents */
-}
-
-tr:nth-child(3) td:nth-child(2) {
-  font-weight: bold;
-  color: #3a3f44; /* Total incidents */
-}
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
