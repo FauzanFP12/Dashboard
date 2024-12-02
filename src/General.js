@@ -54,6 +54,7 @@ const General = () => {
     };
 
     const handleRowSelection = (event) => {
+        if (event.event.target.tagName === 'BUTTON') return;
         const selectedTicket = event.data;
         setSelectedTicket(selectedTicket);
     };
@@ -90,7 +91,27 @@ const General = () => {
         };
         return date.toLocaleString('en-US', options);
     };
-
+    const handleDelete = async (ticketId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this ticket?');
+        if (!confirmDelete) return;
+    
+        try {
+    
+            // Lakukan penghapusan
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/helpdesk-tickets/${ticketId}`);
+            
+            alert('Ticket deleted successfully!');
+            
+            // Perbarui daftar tiket setelah penghapusan
+            fetchTickets();
+        } catch (error) {
+            console.error("Error deleting ticket:", error);
+    
+            // Menampilkan pesan error dengan detail jika memungkinkan
+            alert(`Failed to delete the ticket. ${error.response?.data?.message || 'Please try again later.'}`);
+        }
+    };
+    
     const columns = [
         {
             headerName: 'Created By',
@@ -108,6 +129,32 @@ const General = () => {
             sort: "desc",
             valueFormatter: (params) => formatDate(params.value)
         },
+        {
+            headerName: 'Actions',
+            field: 'actions',
+            flex: 1,
+            cellRenderer: (params) => {
+                return (
+                    <button
+                        onClick={(event) => {
+                            event.stopPropagation(); // Prevent grid row selection on button click
+                            handleDelete(params.data._id); // Call the delete function
+                        }}
+                        style={{
+                            padding: '5px 10px',
+                            backgroundColor: '#ff4d4f',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Delete
+                    </button>
+                );
+            },
+        }
+        
     ];
 
     return (
