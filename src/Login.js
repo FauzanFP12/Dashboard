@@ -53,7 +53,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login to Dashboard</h2>
+      <h3 >Login to Dashboard</h3>
       {errorMessage && <p className="error">{errorMessage}</p>}
       <form onSubmit={handleLoginSubmit}>
         <div className="form-group">
